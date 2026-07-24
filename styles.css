@@ -76,10 +76,11 @@ body {
 
 /* ---------- looping animated background ---------- */
 .bg-aurora { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--bg); pointer-events: none; }
-.orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.55; will-change: transform; }
-.orb-1 { width: 46vmax; height: 46vmax; top: -14vmax; right: -8vmax; background: radial-gradient(circle at 50% 50%, rgba(228, 193, 92, 0.30), transparent 62%); animation: drift1 24s ease-in-out infinite; }
-.orb-2 { width: 40vmax; height: 40vmax; bottom: -12vmax; left: -6vmax; background: radial-gradient(circle at 50% 50%, rgba(110, 156, 245, 0.20), transparent 62%); animation: drift2 30s ease-in-out infinite; }
-.orb-3 { width: 34vmax; height: 34vmax; top: 40%; left: 54%; background: radial-gradient(circle at 50% 50%, rgba(185, 148, 47, 0.20), transparent 62%); animation: drift3 27s ease-in-out infinite; }
+/* Restrained gold ambient field (no loud multi-colour "AI orbs"): deep, slow, on-brand. */
+.orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.16; will-change: transform; }
+.orb-1 { width: 40vmax; height: 40vmax; top: -16vmax; right: -12vmax; background: radial-gradient(circle at 50% 50%, rgba(228, 193, 92, 0.55), transparent 60%); animation: drift1 46s ease-in-out infinite; }
+.orb-2 { width: 30vmax; height: 30vmax; bottom: -14vmax; left: -10vmax; background: radial-gradient(circle at 50% 50%, rgba(185, 148, 47, 0.4), transparent 60%); animation: drift2 58s ease-in-out infinite; }
+.orb-3 { display: none; }
 @keyframes drift1 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-6vmax, 5vmax) scale(1.12); } }
 @keyframes drift2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(7vmax, -4vmax) scale(1.15); } }
 @keyframes drift3 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-5vmax, -6vmax) scale(0.9); } }

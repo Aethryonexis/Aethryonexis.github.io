@@ -31,6 +31,7 @@ const CONFIG = {
   initNudge();
   initModal();
   initAnalytics();
+  initBackendWarmup();
 
   // The name rail is a scroll-spy: the section crossing a stable viewport line owns the active syllable.
   function initScrollSpy() {
@@ -831,5 +832,36 @@ const CONFIG = {
         sendDwell(activeSection, performance.now() - activeSince);
       }
     });
+  }
+
+  // Warm the (possibly asleep) Render backend as the visitor nears the contact form,
+  // so their actual submission is fast. Fires at most once, best-effort.
+  function initBackendWarmup() {
+    if (
+      !CONFIG.backendUrl ||
+      typeof window.fetch !== "function" ||
+      typeof window.IntersectionObserver !== "function"
+    ) {
+      return;
+    }
+    const contact = document.querySelector("#is");
+    if (!contact) {
+      return;
+    }
+    let warmed = false;
+    const observer = new window.IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !warmed) {
+            warmed = true;
+            observer.disconnect();
+            const url = CONFIG.backendUrl.replace(/\/+$/, "") + "/health";
+            window.fetch(url, { method: "GET", mode: "cors", cache: "no-store" }).catch(function () {});
+          }
+        });
+      },
+      { rootMargin: "0px 0px 240px 0px", threshold: 0.01 }
+    );
+    observer.observe(contact);
   }
 })();
