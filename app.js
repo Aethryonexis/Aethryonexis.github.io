@@ -1,7 +1,7 @@
 const CONFIG = {
   contactEmail: "Ae.th.ry.on.ex.is@proton.me",
   // Local: "http://127.0.0.1:10000". Production: "https://your-render-service.onrender.com".
-  backendUrl: "",
+  backendUrl: "https://aethryonexis-backend.onrender.com",
   // GOOGLE ANALYTICS 4: paste your Measurement ID (e.g. "G-XXXXXXXXXX") to enable analytics —
   // including per-section view + dwell-time tracking. Leave "" to load no analytics at all.
   gaMeasurementId: "G-KWZG6QZBX5"
