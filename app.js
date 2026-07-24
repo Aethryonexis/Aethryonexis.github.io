@@ -1,5 +1,7 @@
 const CONFIG = {
   contactEmail: "Ae.th.ry.on.ex.is@proton.me",
+  // Local: "http://127.0.0.1:10000". Production: "https://your-render-service.onrender.com".
+  backendUrl: "",
   // GOOGLE ANALYTICS 4: paste your Measurement ID (e.g. "G-XXXXXXXXXX") to enable analytics —
   // including per-section view + dwell-time tracking. Leave "" to load no analytics at all.
   gaMeasurementId: ""
@@ -408,6 +410,32 @@ const CONFIG = {
       );
     }
 
+    function backendHref(path) {
+      return CONFIG.backendUrl.replace(/\/+$/, "") + path;
+    }
+
+    async function submitTicket(contactEmail) {
+      if (!CONFIG.backendUrl || typeof window.fetch !== "function") {
+        return { sent: false };
+      }
+
+      const response = await window.fetch(backendHref("/api/tickets"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          domain: state.answers.domain,
+          stage: state.answers.stage,
+          timeline: state.answers.timeline,
+          email: contactEmail,
+          note: noteInput ? noteInput.value.trim() : "",
+          company: honeypotInput ? honeypotInput.value : "",
+          startedAt: formReadyAt
+        })
+      });
+
+      return { sent: response.ok };
+    }
+
     form.addEventListener("submit", function (event) {
       event.preventDefault();
 
@@ -442,7 +470,7 @@ const CONFIG = {
         submitBtn.disabled = true;
       }
       if (copyStatus) {
-        copyStatus.textContent = "Opening your mail app...";
+        copyStatus.textContent = CONFIG.backendUrl ? "Sending..." : "Opening your mail app...";
       }
 
       const subject =
@@ -453,19 +481,36 @@ const CONFIG = {
         " · " +
         state.answers.timeline;
 
-      window.location.href = mailtoHref(subject, plaintext);
-
-      window.setTimeout(function () {
+      function finish(message) {
         if (submitBtn) {
           submitBtn.disabled = false;
         }
         if (copyStatus) {
-          copyStatus.textContent = "";
+          copyStatus.textContent = message || "";
         }
         if (confirmation) {
           confirmation.hidden = false;
         }
-      }, 700);
+      }
+
+      submitTicket(contactEmail)
+        .then(function (result) {
+          if (result.sent) {
+            finish("Sent.");
+            return;
+          }
+
+          window.location.href = mailtoHref(subject, plaintext);
+          window.setTimeout(function () {
+            finish("");
+          }, 700);
+        })
+        .catch(function () {
+          window.location.href = mailtoHref(subject, plaintext);
+          window.setTimeout(function () {
+            finish("Network issue - opened your mail app instead.");
+          }, 700);
+        });
     });
 
     function legacyCopy(text) {
