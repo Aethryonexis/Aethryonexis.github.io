@@ -4,7 +4,7 @@ const CONFIG = {
   backendUrl: "",
   // GOOGLE ANALYTICS 4: paste your Measurement ID (e.g. "G-XXXXXXXXXX") to enable analytics —
   // including per-section view + dwell-time tracking. Leave "" to load no analytics at all.
-  gaMeasurementId: ""
+  gaMeasurementId: "G-KWZG6QZBX5"
 };
 
 (function () {
