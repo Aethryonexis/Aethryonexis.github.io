@@ -36,6 +36,37 @@ alias (e.g. `a1b2c3...`). Put that in `formTarget` instead of the email address.
 
 **Turn the relay off:** set `formTarget: ""` in `app.js` to use mailto only.
 
+## End-to-end encryption
+
+Every submission is **encrypted in the visitor's browser** with your public key
+(RSA-OAEP-4096 + AES-256-GCM, via the built-in Web Crypto API — no library, still self-contained)
+*before* it is sent. The relay, GitHub, and anyone on the network only ever see **ciphertext**;
+only your offline **private key** can read it.
+
+- Your keys live in `crypto/`. **`crypto/private-key.jwk` is git-ignored — never commit or push it.**
+- **Read an inquiry:** open `crypto/decrypt.html`, load `private-key.jwk`, paste the blob from the
+  email, Decrypt.
+- **Rotate keys:** open `crypto/keygen.html`, generate a new pair, paste the new public key into
+  `CONFIG.publicKeyJwk` in `app.js`, keep the new private key safe. (Old blobs become unreadable
+  after rotation.)
+- Set `CONFIG.publicKeyJwk` to `null` to send plaintext instead. Full walkthrough: `crypto/README.md`.
+
+## Spam protection (no CAPTCHA, no backend — honest version)
+
+Layered defense for a static site:
+
+- **Honeypot** — a hidden field; bots that fill it are dropped. FormSubmit also enforces this
+  **server-side** (`_honey`), so it works even against direct POSTs to the relay.
+- **Time-trap** — submissions completed in under 2.5s (bot speed) are silently ignored.
+- **Relay filtering + rate limits** — the relay screens known spam and throttles floods.
+- **Encryption as a filter** — junk that isn't validly encrypted **won't decrypt**, so
+  `decrypt.html` discards it automatically; it never reaches your attention.
+- The **site can't be DDoS'd** — GitHub Pages is CDN-served; there's no server of yours to hit.
+
+**Limit:** with no backend and no CAPTCHA, a determined spammer can still POST junk to the relay.
+If that happens, **rotate the endpoint** (FormSubmit alias) or switch to a **Web3Forms** key with a
+**domain allowlist** + server-side filtering — the strongest no-CAPTCHA posture.
+
 ## Run locally
 
 ```bash

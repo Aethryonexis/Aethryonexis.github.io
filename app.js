@@ -6,7 +6,17 @@ const CONFIG = {
   // independent of the visitor's mail client. Nothing else to host — it stays 100% on Pages.
   // Tip: after activating, replace this with your FormSubmit alias hash to keep the email off
   // the page. Set formTarget to "" to disable the relay and fall back to mailto compose.
-  formTarget: "Ae.th.ry.on.ex.is@proton.me"
+  formTarget: "Ae.th.ry.on.ex.is@proton.me",
+  // END-TO-END ENCRYPTION: the brief is encrypted in the browser with THIS public key before it
+  // ever leaves the page, so the relay / GitHub / network only see ciphertext. Only your offline
+  // private key (crypto/private-key.jwk) can read it. Generate or replace both via
+  // crypto/keygen.html and paste the new public key here. Set to null to send plaintext instead.
+  publicKeyJwk: {
+    alg: "RSA-OAEP-256",
+    kty: "RSA",
+    e: "AQAB",
+    n: "mKNxo5kTLIkbR-pH9zyQSONLrwbn18ouIctkSnExmySqjsc87JGVHm1o4Cq509jBB44fMgL_k6RAuACLDLgIHhRWQN3nW2QtM0nwH3zq8bdvSJaZsW3ucqVWpsLvBYllQ589PM6oE3rH3DgQlQjxMotIgUghmQ8zh_C9ZNrMDwh2uypZFmt501cIIaU6psx8ZfzzU_BofIAnKM-eGNe6nXxMLz6Bh7gYT6H88jJ6AS3ITcId2TU59HGeF99Ii7vvL4oEBcbjgSqKI4EmhnN9dt-VmXJXsl3oPFTuXJ0aozv7pRXHq0sPUx_cw6sqnQLk2on5lWQ9oRPLOzeAegMS4gdad7BNJScSQY_3gcNYe1gMzKj4vF5eE8sRbC3cWlFGHOaoyouFbxEZzADI52bafGcrP-HuBr3IAvr7xpU8blS6MHDsIm2zXt0IrIAEWJC7ydthyKGwPmSAcJJbbOcL_C1lnRwVqZVS6Khblk-8miVdjkJStvd6_9c3Yebt6HQYUVnaIC_xBk1rieDkh53caj79-fYrifE8E7oYgSTxT2TdQ9ZxGisb0a9gKMr4wvcy9h2U-bmhGpgnFMeWOyB9Miy68Ar1HdIBUBaIjtkC4d72T-tTvAqhiwUZXNgltxDndFe8uB4SjSnQIbzjhqiK1yCYZu2OKDAnjkZ9Ct5MofU"
+  }
 };
 
 (function () {
@@ -32,6 +42,56 @@ const CONFIG = {
   initQuiz();
   initNudge();
   initModal();
+
+  // ---- end-to-end encryption (Web Crypto API — no libraries, works offline / on GitHub Pages) ----
+  function bufToB64(buf) {
+    const bytes = new Uint8Array(buf);
+    let binary = "";
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
+
+  function cryptoAvailable() {
+    return !!(
+      CONFIG.publicKeyJwk &&
+      window.crypto &&
+      window.crypto.subtle &&
+      window.TextEncoder &&
+      window.btoa
+    );
+  }
+
+  // Hybrid encrypt: AES-256-GCM for the message, RSA-OAEP to wrap the AES key. Returns a base64
+  // envelope that only the matching private key (crypto/private-key.jwk) can open.
+  async function encryptBrief(plaintext) {
+    const subtle = window.crypto.subtle;
+    const publicKey = await subtle.importKey(
+      "jwk",
+      CONFIG.publicKeyJwk,
+      { name: "RSA-OAEP", hash: "SHA-256" },
+      false,
+      ["encrypt"]
+    );
+    const aesKey = await subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt"]);
+    const iv = window.crypto.getRandomValues(new Uint8Array(12));
+    const data = await subtle.encrypt(
+      { name: "AES-GCM", iv: iv },
+      aesKey,
+      new TextEncoder().encode(plaintext)
+    );
+    const rawAes = await subtle.exportKey("raw", aesKey);
+    const wrappedKey = await subtle.encrypt({ name: "RSA-OAEP" }, publicKey, rawAes);
+    const envelope = {
+      v: 1,
+      alg: "RSA-OAEP-256+A256GCM",
+      key: bufToB64(wrappedKey),
+      iv: bufToB64(iv),
+      data: bufToB64(data)
+    };
+    return window.btoa(JSON.stringify(envelope));
+  }
 
   // The name rail is a scroll-spy: the section crossing a stable viewport line owns the active syllable.
   function initScrollSpy() {
@@ -191,6 +251,7 @@ const CONFIG = {
         timeline: ""
       }
     };
+    const formReadyAt = Date.now(); // time-trap baseline for spam detection
 
     if (panels.length === 0 || choiceButtons.length === 0) {
       return;
@@ -399,17 +460,29 @@ const CONFIG = {
       ].join("\n");
     }
 
-    // Mailto is the only delivery path in this self-contained build; subject and body are encoded once.
-    function buildMailto(contactEmail) {
-      const subject =
-        "[SCOPE] " +
-        state.answers.domain +
-        " · " +
-        state.answers.stage +
-        " · " +
-        state.answers.timeline;
-      const body = buildPlainText(contactEmail);
+    // Relay the (already-encrypted) blob through FormSubmit — server-side delivery, no backend to
+    // host. The honeypot is enforced at the relay too via the _honey field.
+    function relaySend(subject, blob) {
+      return window
+        .fetch("https://formsubmit.co/ajax/" + encodeURIComponent(CONFIG.formTarget), {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            _subject: subject,
+            _captcha: "false",
+            _honey: honeypotInput ? honeypotInput.value : "",
+            Inquiry: blob
+          })
+        })
+        .then(function (res) {
+          return res.ok;
+        })
+        .catch(function () {
+          return false;
+        });
+    }
 
+    function mailtoHref(subject, body) {
       return (
         "mailto:" +
         CONFIG.contactEmail +
@@ -420,35 +493,30 @@ const CONFIG = {
       );
     }
 
-    // Static-friendly delivery: relay the brief through FormSubmit.co so it reaches the inbox
-    // server-side (no visitor mail client, no backend to host — works on plain GitHub Pages).
-    function sendViaEndpoint(contactEmail) {
-      const subject =
-        "[SCOPE] " + state.answers.domain + " · " + state.answers.stage + " · " + state.answers.timeline;
-      const note = noteInput && noteInput.value ? noteInput.value.trim() : "—";
-      return window
-        .fetch("https://formsubmit.co/ajax/" + encodeURIComponent(CONFIG.formTarget), {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            _subject: subject,
-            _template: "table",
-            _captcha: "false",
-            _replyto: contactEmail,
-            _honey: honeypotInput ? honeypotInput.value : "",
-            Domain: state.answers.domain,
-            Stage: state.answers.stage,
-            Timeline: state.answers.timeline,
-            Email: contactEmail,
-            Note: note
-          })
-        })
-        .then(function (res) {
-          return res.ok;
-        })
-        .catch(function () {
-          return false;
-        });
+    // Encrypt the brief end-to-end when a public key is configured; otherwise fall back to plaintext.
+    function buildPayload(plaintext) {
+      if (!cryptoAvailable()) {
+        return Promise.resolve({ body: plaintext, encrypted: false });
+      }
+      return encryptBrief(plaintext).then(
+        function (blob) {
+          return { body: blob, encrypted: true };
+        },
+        function () {
+          return { body: plaintext, encrypted: false };
+        }
+      );
+    }
+
+    function mailBody(payload) {
+      if (!payload.encrypted) {
+        return payload.body;
+      }
+      return (
+        "AETHRYONEXIS — end-to-end encrypted inquiry.\n" +
+        "Decrypt with crypto/decrypt.html and your private key.\n\n" +
+        payload.body
+      );
     }
 
     form.addEventListener("submit", function (event) {
@@ -466,44 +534,64 @@ const CONFIG = {
       }
 
       clearEmailError();
-      const contactEmail = emailInput.value.trim();
-      const submitBtn = form.querySelector(".transmit-button");
-      const canPost = CONFIG.formTarget && typeof window.fetch === "function";
 
-      if (!canPost) {
+      // Spam handling without a CAPTCHA: silently drop honeypot hits and implausibly fast submits.
+      const honeyFilled = honeypotInput && honeypotInput.value.trim() !== "";
+      const tooFast = Date.now() - formReadyAt < 2500;
+      if (honeyFilled || tooFast) {
         if (confirmation) {
           confirmation.hidden = false;
         }
-        window.location.href = buildMailto(contactEmail);
         return;
       }
+
+      const contactEmail = emailInput.value.trim();
+      const submitBtn = form.querySelector(".transmit-button");
+      const plaintext = buildPlainText(contactEmail);
 
       if (submitBtn) {
         submitBtn.disabled = true;
       }
       if (copyStatus) {
-        copyStatus.textContent = "Sending…";
+        copyStatus.textContent = cryptoAvailable() ? "Encrypting…" : "Sending…";
       }
-      sendViaEndpoint(contactEmail).then(function (ok) {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-        }
-        if (ok) {
+
+      buildPayload(plaintext).then(function (payload) {
+        const subject = payload.encrypted
+          ? "[AETHRYONEXIS] Encrypted inquiry"
+          : "[SCOPE] " +
+            state.answers.domain +
+            " · " +
+            state.answers.stage +
+            " · " +
+            state.answers.timeline;
+
+        function finish(fallbackNote) {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+          }
           if (copyStatus) {
-            copyStatus.textContent = "";
+            copyStatus.textContent = fallbackNote ? "Network hiccup — opening your mail app instead." : "";
           }
           if (confirmation) {
             confirmation.hidden = false;
           }
-        } else {
-          if (copyStatus) {
-            copyStatus.textContent = "Network hiccup — opening your mail app instead.";
-          }
-          if (confirmation) {
-            confirmation.hidden = false;
-          }
-          window.location.href = buildMailto(contactEmail);
         }
+
+        if (!CONFIG.formTarget || typeof window.fetch !== "function") {
+          finish(false);
+          window.location.href = mailtoHref(subject, mailBody(payload));
+          return;
+        }
+
+        relaySend(subject, payload.body).then(function (ok) {
+          if (ok) {
+            finish(false);
+          } else {
+            finish(true);
+            window.location.href = mailtoHref(subject, mailBody(payload));
+          }
+        });
       });
     });
 

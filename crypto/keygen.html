@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0B0D12">
+    <meta name="referrer" content="no-referrer">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'"
+    >
+    <title>Keypair generator · AETHRYONEXIS</title>
+    <link rel="icon" href="data:,">
+    <style>
+      :root {
+        --bg: #0b0d12;
+        --bg-2: #0f1219;
+        --platinum: #f5f3ec;
+        --text: #c9cdd6;
+        --muted: #8b909b;
+        --gold: #e4c15c;
+        --gold-hi: #f7e4a6;
+        --gold-lo: #b9942f;
+        --signal: #6e9cf5;
+        --danger: #f0a0a0;
+        --line: rgba(255, 255, 255, 0.12);
+        --line-2: rgba(255, 255, 255, 0.2);
+        --panel: rgba(255, 255, 255, 0.05);
+        --ink: #17130a;
+        --display: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+        --shadow: 0 28px 70px -36px rgba(0, 0, 0, 0.95);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        min-height: 100%;
+        background: var(--bg);
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 88% -8%, rgba(228, 193, 92, 0.16), transparent 32rem),
+          linear-gradient(180deg, var(--bg-2), var(--bg) 42%);
+        font-family: var(--display);
+        font-size: 1rem;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: linear-gradient(to bottom, black, transparent 72%);
+        content: "";
+        pointer-events: none;
+      }
+
+      button,
+      textarea,
+      a {
+        font: inherit;
+      }
+
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :where(button, textarea, a):focus-visible {
+        border-radius: 6px;
+        outline: 2px solid var(--signal);
+        outline-offset: 3px;
+      }
+
+      ::selection {
+        color: var(--ink);
+        background: var(--gold-hi);
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .shell {
+        width: min(100% - 32px, 920px);
+        margin-inline: auto;
+        padding-block: clamp(32px, 7vw, 76px);
+      }
+
+      .utility-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: clamp(42px, 8vw, 78px);
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 0.69rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .wordmark {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--platinum);
+        font-weight: 600;
+      }
+
+      .wordmark-mark {
+        display: grid;
+        width: 22px;
+        height: 22px;
+        border: 1px solid var(--gold);
+        border-radius: 50%;
+        place-items: center;
+      }
+
+      .wordmark-mark::after {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gold-hi);
+        box-shadow: 0 0 12px rgba(228, 193, 92, 0.8);
+        content: "";
+      }
+
+      .local-state {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+      }
+
+      .local-state::before {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+        content: "";
+      }
+
+      .intro {
+        max-width: 720px;
+        margin-bottom: clamp(30px, 6vw, 52px);
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--gold);
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 14ch;
+        margin: 0;
+        color: var(--platinum);
+        font-size: clamp(2.35rem, 7vw, 4.75rem);
+        font-weight: 700;
+        letter-spacing: -0.055em;
+        line-height: 0.98;
+      }
+
+      .lede {
+        max-width: 59ch;
+        margin: 22px 0 0;
+        color: var(--text);
+        font-size: clamp(1rem, 2vw, 1.12rem);
+      }
+
+      .panel {
+        overflow: hidden;
+        border: 1px solid var(--line-2);
+        border-radius: 22px;
+        background: linear-gradient(180deg, rgba(26, 28, 36, 0.84), rgba(14, 16, 22, 0.84));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), var(--shadow);
+      }
+
+      .panel-head,
+      .panel-body {
+        padding: clamp(22px, 5vw, 36px);
+      }
+
+      .panel-head {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 18px;
+        align-items: start;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .step {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--gold-lo);
+        border-radius: 50%;
+        color: var(--gold);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        place-items: center;
+      }
+
+      h2,
+      h3 {
+        margin: 0;
+        color: var(--platinum);
+        letter-spacing: -0.025em;
+      }
+
+      h2 {
+        font-size: clamp(1.25rem, 3vw, 1.6rem);
+      }
+
+      h3 {
+        font-size: 1rem;
+      }
+
+      .panel-head p,
+      .field-note,
+      .rotation-note {
+        margin: 7px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .action-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0.72rem 1.2rem;
+        border: 1px solid var(--gold-hi);
+        border-radius: 999px;
+        color: var(--ink);
+        background: linear-gradient(180deg, var(--gold-hi), var(--gold));
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.45),
+          0 14px 34px -18px rgba(228, 193, 92, 0.65);
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        font-weight: 700;
+        line-height: 1;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .button:hover:not(:disabled) {
+        transform: translateY(-1px);
+      }
+
+      .button:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .button:disabled {
+        cursor: wait;
+        filter: saturate(0.35);
+        opacity: 0.68;
+      }
+
+      .button-secondary {
+        border-color: var(--line-2);
+        color: var(--platinum);
+        background: var(--panel);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      }
+
+      .status {
+        min-height: 1.4em;
+        margin: 0;
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 0.73rem;
+      }
+
+      .status[data-tone="success"] {
+        color: var(--gold-hi);
+      }
+
+      .status[data-tone="error"] {
+        color: var(--danger);
+      }
+
+      .output {
+        display: grid;
+        gap: 24px;
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid var(--line);
+      }
+
+      .field-label {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--platinum);
+        font-size: 0.9rem;
+        font-weight: 650;
+      }
+
+      code {
+        color: var(--gold-hi);
+        font-family: var(--mono);
+        font-size: 0.88em;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 154px;
+        resize: vertical;
+        padding: 15px 16px;
+        border: 1px solid var(--line-2);
+        border-radius: 12px;
+        color: var(--text);
+        background: rgba(0, 0, 0, 0.34);
+        font-family: var(--mono);
+        font-size: 0.76rem;
+        line-height: 1.55;
+        caret-color: var(--gold);
+      }
+
+      textarea:focus {
+        border-color: var(--gold);
+      }
+
+      .copy-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-top: 12px;
+      }
+
+      .copy-row .button {
+        min-height: 40px;
+        padding-block: 0.58rem;
+      }
+
+      .private-card {
+        padding: 20px;
+        border: 1px solid rgba(228, 193, 92, 0.25);
+        border-radius: 14px;
+        background: rgba(228, 193, 92, 0.055);
+      }
+
+      .private-card p {
+        margin: 7px 0 16px;
+        color: var(--text);
+        font-size: 0.92rem;
+      }
+
+      .private-card strong {
+        color: var(--gold-hi);
+      }
+
+      .rotation-note {
+        margin-top: 22px;
+        padding-left: 14px;
+        border-left: 2px solid var(--gold-lo);
+      }
+
+      .privacy-strip {
+        display: flex;
+        gap: 11px;
+        align-items: baseline;
+        margin-top: 22px;
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 0.69rem;
+      }
+
+      .privacy-strip span:first-child {
+        color: var(--gold);
+      }
+
+      @media (max-width: 620px) {
+        .utility-bar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .panel-head {
+          grid-template-columns: 1fr;
+        }
+
+        .action-row {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .copy-row .status {
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .button {
+          transition:
+            transform 180ms ease,
+            filter 180ms ease,
+            opacity 180ms ease;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="utility-bar" aria-label="Utility status">
+        <span class="wordmark">
+          <span class="wordmark-mark" aria-hidden="true"></span>
+          AETHRYONEXIS
+        </span>
+        <span class="local-state">Local cryptography utility</span>
+      </div>
+
+      <header class="intro">
+        <p class="eyebrow">Key ceremony / RSA-4096</p>
+        <h1>Create the keys. Keep the power offline.</h1>
+        <p class="lede">
+          Generate the public key used by the contact form and the private key used to open its
+          encrypted submissions. Everything happens in this browser tab.
+        </p>
+      </header>
+
+      <section class="panel" aria-labelledby="generator-title">
+        <div class="panel-head">
+          <span class="step" aria-hidden="true">01</span>
+          <div>
+            <h2 id="generator-title">Generate a new keypair</h2>
+            <p>RSA-OAEP, 4096-bit modulus, SHA-256. Generation can take a few seconds.</p>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <div class="action-row">
+            <button class="button" id="generate-button" type="button">Generate keypair</button>
+            <p class="status" id="generation-status" role="status" aria-live="polite">Ready.</p>
+          </div>
+
+          <div class="output" id="key-output" hidden>
+            <div>
+              <label class="field-label" for="public-key">
+                Paste this as <code>CONFIG.publicKeyJwk</code> in <code>app.js</code>
+              </label>
+              <textarea
+                id="public-key"
+                rows="6"
+                wrap="off"
+                readonly
+                spellcheck="false"
+                aria-describedby="public-key-note"
+              ></textarea>
+              <p class="field-note" id="public-key-note">
+                This compact public JWK is safe to publish with the website.
+              </p>
+              <div class="copy-row">
+                <button class="button button-secondary" id="copy-button" type="button">Copy</button>
+                <p class="status" id="copy-status" role="status" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <div class="private-card">
+              <h3>Private key</h3>
+              <p>
+                <strong>Keep it offline. Never commit it. Never share it.</strong>
+                Anyone with this file can read your submissions.
+              </p>
+              <a
+                class="button button-secondary"
+                id="download-link"
+                href="#"
+                download="private-key.jwk"
+              >
+                Download private-key.jwk
+              </a>
+            </div>
+          </div>
+
+          <p class="rotation-note">
+            Regenerating keys invalidates old submissions unless you retain the old private key.
+          </p>
+        </div>
+      </section>
+
+      <p class="privacy-strip">
+        <span aria-hidden="true">●</span>
+        No upload · no storage · no network
+      </p>
+    </main>
+
+    <script>
+      (function () {
+        "use strict";
+
+        var generateButton = document.getElementById("generate-button");
+        var generationStatus = document.getElementById("generation-status");
+        var output = document.getElementById("key-output");
+        var publicKeyBox = document.getElementById("public-key");
+        var copyButton = document.getElementById("copy-button");
+        var copyStatus = document.getElementById("copy-status");
+        var downloadLink = document.getElementById("download-link");
+        var privateKeyUrl = "";
+
+        function setStatus(element, message, tone) {
+          element.textContent = message;
+          if (tone) {
+            element.dataset.tone = tone;
+          } else {
+            delete element.dataset.tone;
+          }
+        }
+
+        function supportsRequiredApis() {
+          return Boolean(
+            window.crypto &&
+              window.crypto.subtle &&
+              window.URL &&
+              typeof window.URL.createObjectURL === "function"
+          );
+        }
+
+        function revokePrivateKeyUrl() {
+          if (privateKeyUrl) {
+            window.URL.revokeObjectURL(privateKeyUrl);
+            privateKeyUrl = "";
+          }
+        }
+
+        async function generateKeypair() {
+          generateButton.disabled = true;
+          copyButton.disabled = true;
+          copyStatus.textContent = "";
+          setStatus(generationStatus, "Generating 4096-bit keypair…");
+
+          try {
+            var keypair = await window.crypto.subtle.generateKey(
+              {
+                name: "RSA-OAEP",
+                modulusLength: 4096,
+                publicExponent: new Uint8Array([1, 0, 1]),
+                hash: "SHA-256"
+              },
+              true,
+              ["encrypt", "decrypt"]
+            );
+
+            var exportedKeys = await Promise.all([
+              window.crypto.subtle.exportKey("jwk", keypair.publicKey),
+              window.crypto.subtle.exportKey("jwk", keypair.privateKey)
+            ]);
+            var publicJwk = exportedKeys[0];
+            var privateJwk = exportedKeys[1];
+
+            // These optional metadata fields can conflict with import-time policy.
+            delete publicJwk.key_ops;
+            delete publicJwk.ext;
+
+            publicKeyBox.value = JSON.stringify(publicJwk);
+
+            revokePrivateKeyUrl();
+            privateKeyUrl = window.URL.createObjectURL(
+              new Blob([JSON.stringify(privateJwk, null, 2) + "\n"], {
+                type: "application/json"
+              })
+            );
+            downloadLink.href = privateKeyUrl;
+
+            output.hidden = false;
+            copyButton.disabled = false;
+            setStatus(generationStatus, "Keypair ready.", "success");
+          } catch (error) {
+            setStatus(
+              generationStatus,
+              "Could not generate a keypair in this browser. Try a current browser with Web Crypto enabled.",
+              "error"
+            );
+          } finally {
+            generateButton.disabled = false;
+          }
+        }
+
+        function fallbackCopy(textarea) {
+          textarea.focus();
+          textarea.select();
+          textarea.setSelectionRange(0, textarea.value.length);
+
+          if (!document.execCommand("copy")) {
+            throw new Error("Copy command was not available.");
+          }
+        }
+
+        async function copyPublicKey() {
+          if (!publicKeyBox.value) {
+            setStatus(copyStatus, "Generate a keypair first.", "error");
+            return;
+          }
+
+          try {
+            if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+              try {
+                await navigator.clipboard.writeText(publicKeyBox.value);
+              } catch (clipboardError) {
+                fallbackCopy(publicKeyBox);
+              }
+            } else {
+              fallbackCopy(publicKeyBox);
+            }
+
+            setStatus(copyStatus, "Copied.", "success");
+          } catch (error) {
+            setStatus(copyStatus, "Copy was blocked. Select the public key and copy it manually.", "error");
+          }
+        }
+
+        generateButton.addEventListener("click", generateKeypair);
+        copyButton.addEventListener("click", copyPublicKey);
+        window.addEventListener("beforeunload", revokePrivateKeyUrl);
+
+        if (!supportsRequiredApis()) {
+          generateButton.disabled = true;
+          setStatus(
+            generationStatus,
+            "Web Crypto is not available here. Open this file in a current browser.",
+            "error"
+          );
+        }
+      })();
+    </script>
+  </body>
+</html>
