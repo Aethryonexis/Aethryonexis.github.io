@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="AETHRYONEXIS — a software engineering studio. We design, build, and ship production systems end to end: automation, AI, security, infrastructure, and web."
+    >
+    <meta name="theme-color" content="#0B0D12">
+    <title>AETHRYONEXIS — Software Engineering Studio</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg%20xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%230B0D12'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='22'%20fill='none'%20stroke='%23E4C15C'%20stroke-width='1.5'%20stroke-dasharray='72%2020'/%3E%3Cpath%20d='M17%2046%2032%2018l10%2019'%20fill='none'%20stroke='%23F4F2EC'%20stroke-width='3.4'/%3E%3Cpath%20d='M28%2030%2046%2046M46%2029%2030%2046'%20fill='none'%20stroke='%23E4C15C'%20stroke-width='3.4'/%3E%3Ccircle%20cx='50'%20cy='18'%20r='3.4'%20fill='%23F7E4A6'/%3E%3C/svg%3E"
+    >
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <!-- loading animation -->
+    <div class="loader" id="loader" role="status" aria-label="Loading AETHRYONEXIS">
+      <div class="loader-glyph" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="64" height="64">
+          <circle class="lg-orbit" cx="32" cy="32" r="24" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-dasharray="80 26" stroke-linecap="round"></circle>
+          <path d="M17 46 32 18l10 19" fill="none" stroke="var(--platinum)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M28 30 46 46M46 29 30 46" fill="none" stroke="var(--gold)" stroke-width="3.2" stroke-linecap="round"></path>
+        </svg>
+      </div>
+      <p class="loader-word" aria-hidden="true">AE·TH·RY·ON·EX·IS</p>
+      <div class="loader-bar" aria-hidden="true"><span></span></div>
+    </div>
+
+    <!-- looping animated background -->
+    <div class="bg-aurora" aria-hidden="true">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+    </div>
+    <div class="bg-grain" aria-hidden="true"></div>
+
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="chrome">
+      <a class="brandmark" href="#ae" aria-label="AETHRYONEXIS — home">
+        <span class="brandmark-glyph" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="18" height="18">
+            <circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="34 12" opacity="0.7"></circle>
+            <path d="M8 23 16 8l5 10" fill="none" stroke="currentColor" stroke-width="2"></path>
+            <path d="M14 15 23 23M23 14 15 23" fill="none" stroke="currentColor" stroke-width="2"></path>
+          </svg>
+        </span>
+        <span class="brandmark-text">AETHRYONEXIS</span>
+      </a>
+
+      <nav class="index-rail" aria-label="Section index">
+        <a class="index-link is-active" href="#ae" data-target="ae" aria-current="location" aria-label="AE — Aether — Studio"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">AE</span></a>
+        <a class="index-link" href="#th" data-target="th" aria-label="TH — Thought — Practice"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">TH</span></a>
+        <a class="index-link" href="#ry" data-target="ry" aria-label="RY — Rhythm — Method"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">RY</span></a>
+        <a class="index-link" href="#on" data-target="on" aria-label="ON — Origin — Work"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">ON</span></a>
+        <a class="index-link" href="#ex" data-target="ex" aria-label="EX — Execution — Engagements"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">EX</span></a>
+        <a class="index-link" href="#is" data-target="is" aria-label="IS — Intelligence Systems — Contact"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">IS</span></a>
+      </nav>
+
+      <a class="chrome-cta" href="#is"><span>Start a build</span><span class="btn-orb" aria-hidden="true">↗</span></a>
+    </header>
+
+    <main id="main-content">
+      <!-- ===================== HERO / AE ===================== -->
+      <section class="hero" id="ae" data-section="ae" aria-labelledby="hero-title">
+        <div class="wrap hero-grid">
+          <div class="hero-lead reveal">
+            <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Software engineering studio</p>
+            <h1 class="wordmark" id="hero-title" aria-label="AETHRYONEXIS">
+              <span class="syl">AE</span><span class="sep" aria-hidden="true">·</span><span class="syl">TH</span><span class="sep" aria-hidden="true">·</span><span class="syl">RY</span><span class="sep" aria-hidden="true">·</span><span class="syl">ON</span><span class="sep" aria-hidden="true">·</span><span class="syl">EX</span><span class="sep" aria-hidden="true">·</span><span class="syl gold">IS</span>
+            </h1>
+            <p class="lede">We design, build, and ship production systems end to end. Consulting when the problem needs shaping. Delivery when it needs building.</p>
+            <p class="sub-line">New name. Deliberately small. Work speaks first.</p>
+            <ul class="domain-row" aria-label="Domains">
+              <li class="tag">Automation</li><li class="tag">AI</li><li class="tag">Security</li><li class="tag">Infrastructure</li><li class="tag">Web</li>
+            </ul>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#is" data-magnetic><span>Scope a build</span><span class="btn-orb" aria-hidden="true">↘</span></a>
+              <a class="btn btn-ghost" href="#on"><span>See the work</span><span class="btn-orb ghost" aria-hidden="true">→</span></a>
+            </div>
+          </div>
+
+          <aside class="hero-panel reveal" aria-label="Studio status">
+            <div class="hero-panel-core">
+              <div class="nexus">
+                <svg class="nexus-mark" viewBox="0 0 320 320" role="img" aria-labelledby="nexus-title">
+                  <title id="nexus-title">AETHRYONEXIS orbital nexus mark</title>
+                  <defs>
+                    <linearGradient id="ng" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#F7E4A6"></stop><stop offset="0.5" stop-color="#E4C15C"></stop><stop offset="1" stop-color="#9C7A1E"></stop>
+                    </linearGradient>
+                  </defs>
+                  <g class="nexus-orbit" fill="none" stroke="url(#ng)" stroke-width="1.5">
+                    <circle cx="160" cy="160" r="132" stroke-dasharray="300 26 78 26 250 120" opacity="0.9"></circle>
+                    <circle cx="286" cy="96" r="7" fill="#F7E4A6" stroke="none"></circle>
+                    <circle cx="40" cy="205" r="4.5" fill="#E4C15C" stroke="none"></circle>
+                    <circle cx="238" cy="278" r="3.5" fill="#9C7A1E" stroke="none"></circle>
+                  </g>
+                  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M72 246 152 70l56 112" stroke="url(#ng)" stroke-width="16"></path>
+                    <path d="M128 158 236 250M236 148 132 250" stroke="#F4F2EC" stroke-width="13"></path>
+                    <path d="M152 70 208 182" stroke="#E4C15C" stroke-width="2.5"></path>
+                  </g>
+                </svg>
+              </div>
+              <dl class="readout">
+                <div><dt>Status</dt><dd class="live"><span class="live-dot" aria-hidden="true"></span>Open for work</dd></div>
+                <div><dt>Focus</dt><dd>End-to-end delivery</dd></div>
+                <div><dt>Practice</dt><dd>Systems &amp; security</dd></div>
+                <div><dt>Basis</dt><dd>Remote, worldwide</dd></div>
+              </dl>
+            </div>
+          </aside>
+        </div>
+
+        <!-- the name is the thesis -->
+        <div class="wrap name-decode reveal">
+          <p class="nd-head"><span>AE·TH·RY·ON·EX·IS</span> — the name is the thesis</p>
+          <ul class="nd-list">
+            <li class="nd-item"><span class="nd-syl">Ae</span><span class="nd-name">Aether</span><span class="nd-desc">the highest heavens, limitless possibility</span></li>
+            <li class="nd-item"><span class="nd-syl">Th</span><span class="nd-name">Thought</span><span class="nd-desc">ideas and intelligence</span></li>
+            <li class="nd-item"><span class="nd-syl">Ry</span><span class="nd-name">Rhythm</span><span class="nd-desc">continuous building and iteration</span></li>
+            <li class="nd-item"><span class="nd-syl">On</span><span class="nd-name">Origin</span><span class="nd-desc">creation from nothing</span></li>
+            <li class="nd-item"><span class="nd-syl">Ex</span><span class="nd-name">Execution</span><span class="nd-desc">shipping products, not just ideas</span></li>
+            <li class="nd-item"><span class="nd-syl">Is</span><span class="nd-name">Intelligence Systems</span><span class="nd-desc">AI and software</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================== PRACTICE / TH ===================== -->
+      <section class="section band-practice" id="th" data-section="th" aria-labelledby="th-title">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="kicker"><span>TH</span> / Practice <i>— 05 domains</i></p>
+            <h2 class="h2" id="th-title">What we build, and hold the line on.</h2>
+          </header>
+          <div class="bento bento-practice">
+            <article class="card feat reveal"><p class="card-k">01 — Automation</p><h3 class="card-h">Automation</h3><p class="card-p">Replacing manual operations with systems. Pipelines, scrapers, orchestration, and automation layered onto software that was never built to expose an interface.</p></article>
+            <article class="card reveal"><p class="card-k">02 — AI</p><h3 class="card-h">AI Systems</h3><p class="card-p">LLM-backed tooling, retrieval, and inference plumbing — built to be observable and debuggable, not demoed once and abandoned.</p></article>
+            <article class="card reveal"><p class="card-k">03 — Security</p><h3 class="card-h">Security</h3><p class="card-p">Secure architecture, applied cryptography, threat modelling, hardening. Designed to survive review, not to pass a checklist.</p></article>
+            <article class="card reveal"><p class="card-k">04 — Infrastructure</p><h3 class="card-h">Infrastructure</h3><p class="card-p">Deployment, hosting, scale. Systems that stay up, degrade gracefully, and are cheap to operate.</p></article>
+            <article class="card reveal"><p class="card-k">05 — Web</p><h3 class="card-h">Web</h3><p class="card-p">Interfaces and services, front to back, held to the same standard as everything behind them.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== METHOD / RY ===================== -->
+      <section class="section band-method" id="ry" data-section="ry" aria-labelledby="ry-title">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="kicker"><span>RY</span> / Method <i>— scope to hand off</i></p>
+            <h2 class="h2" id="ry-title">A rhythm, not a ritual.</h2>
+          </header>
+          <ol class="timeline reveal">
+            <li class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">01</span><h3>Scope</h3><p>Understand the system before touching it.</p></li>
+            <li class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">02</span><h3>Architect</h3><p>Decide the tradeoffs explicitly. Write them down.</p></li>
+            <li class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">03</span><h3>Build</h3><p>Ship in slices. Nothing sits unmerged for a month.</p></li>
+            <li class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">04</span><h3>Harden</h3><p>Tests, threat model, failure modes, observability.</p></li>
+            <li class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">05</span><h3>Hand off</h3><p>Documented, reproducible, and yours to run.</p></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ===================== WORK / ON ===================== -->
+      <section class="section band-work" id="on" data-section="on" aria-labelledby="on-title">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="kicker"><span>ON</span> / Selected work <i>— a recent build</i></p>
+            <h2 class="h2" id="on-title">One we can talk about.</h2>
+          </header>
+          <article class="feature reveal">
+            <div class="feature-body">
+              <p class="feature-tag">Bakery delivery · production</p>
+              <h3 class="feature-title">Bread Crumbs</h3>
+              <p class="feature-desc">A bakery delivery application built around three roles — customer, owner, and driver. Real-time ordering, live driver tracking on routed maps, tamper-proof delivery addresses, and race-safe order assignment, built to stay correct under real traffic.</p>
+              <ul class="feature-points">
+                <li>Live driver tracking on routed maps</li>
+                <li>Signed delivery addresses — no coordinate spoofing</li>
+                <li>Atomic, race-safe order assignment</li>
+                <li>Real-time updates across all three roles</li>
+              </ul>
+              <p class="stack">React · Node.js · Socket.IO · MongoDB · OSRM</p>
+            </div>
+            <aside class="feature-spec" aria-label="Roles">
+              <p class="fs-head">// roles</p>
+              <ul>
+                <li><span>01</span> Customer — order, track, pay</li>
+                <li><span>02</span> Owner — menu, orders, dispatch</li>
+                <li><span>03</span> Driver — assigned routes, live GPS</li>
+              </ul>
+              <p class="fs-note">Client code is kept private.</p>
+            </aside>
+          </article>
+          <p class="work-note">We keep client work private — more can be walked through on a call.</p>
+        </div>
+      </section>
+
+      <!-- ===================== ENGAGEMENTS / EX ===================== -->
+      <section class="section band-eng" id="ex" data-section="ex" aria-labelledby="ex-title">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="kicker"><span>EX</span> / Engagements <i>— how we work together</i></p>
+            <h2 class="h2" id="ex-title">Four ways in.</h2>
+          </header>
+          <ul class="eng-list reveal">
+            <li class="eng-row"><span class="eng-num">EX.01</span><div class="eng-body"><h3>Advisory</h3><p>Architecture review, threat modelling, technical due diligence.</p></div><a class="eng-go" href="#is" aria-label="Advisory — start a build"><span aria-hidden="true">↗</span></a></li>
+            <li class="eng-row"><span class="eng-num">EX.02</span><div class="eng-body"><h3>Build</h3><p>Scoped delivery of a system, end to end.</p></div><a class="eng-go" href="#is" aria-label="Build — start a build"><span aria-hidden="true">↗</span></a></li>
+            <li class="eng-row"><span class="eng-num">EX.03</span><div class="eng-body"><h3>Automation</h3><p>Audit a manual process. Replace it. Hand back the keys.</p></div><a class="eng-go" href="#is" aria-label="Automation — start a build"><span aria-hidden="true">↗</span></a></li>
+            <li class="eng-row"><span class="eng-num">EX.04</span><div class="eng-body"><h3>Retainer</h3><p>Ongoing engineering capacity for teams without it.</p></div><a class="eng-go" href="#is" aria-label="Retainer — start a build"><span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================== CONTACT / IS ===================== -->
+      <section class="section band-contact" id="is" data-section="is" aria-labelledby="is-title">
+        <div class="wrap contact-grid">
+          <div class="contact-side reveal">
+            <p class="kicker"><span>IS</span> / Contact <i>— start here</i></p>
+            <h2 class="h2" id="is-title">Start a build.</h2>
+            <p class="contact-lead">A system that needs building — or a manual process that shouldn't be manual? Answer three questions and we'll have the shape of it before we even talk.</p>
+            <p class="contact-direct">Direct — <a href="mailto:Ae.th.ry.on.ex.is@proton.me">Ae.th.ry.on.ex.is@proton.me</a></p>
+          </div>
+
+          <div class="bezel reveal">
+            <form class="quiz-card" id="scope-form" novalidate>
+              <header class="quiz-header">
+                <p><span class="status-node" aria-hidden="true"></span> Scope diagnostic</p>
+                <p class="quiz-progress" id="quiz-progress" aria-live="polite">01 / 03</p>
+              </header>
+
+              <fieldset class="quiz-panel" data-panel="domain">
+                <legend><span class="question-number">01</span><span class="quiz-question" tabindex="-1">What do you need built?</span></legend>
+                <div class="chip-group" role="group" aria-label="Select a build domain">
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Automation" aria-pressed="false">Automation</button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="AI systems" aria-pressed="false">AI systems</button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Security" aria-pressed="false">Security</button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Infrastructure" aria-pressed="false">Infrastructure</button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Web" aria-pressed="false">Web</button>
+                </div>
+              </fieldset>
+
+              <fieldset class="quiz-panel" data-panel="stage" hidden>
+                <legend><span class="question-number">02</span><span class="quiz-question" tabindex="-1">What stage is it at?</span></legend>
+                <div class="chip-group" role="group" aria-label="Select the current stage">
+                  <button class="choice-chip" type="button" data-key="stage" data-value="Idea" aria-pressed="false">Idea</button>
+                  <button class="choice-chip" type="button" data-key="stage" data-value="Prototype" aria-pressed="false">Prototype</button>
+                  <button class="choice-chip" type="button" data-key="stage" data-value="In production" aria-pressed="false">In production</button>
+                  <button class="choice-chip" type="button" data-key="stage" data-value="Firefighting" aria-pressed="false">Firefighting</button>
+                </div>
+                <button class="back-button" type="button" data-back="0">← Back</button>
+              </fieldset>
+
+              <fieldset class="quiz-panel" data-panel="timeline" hidden>
+                <legend><span class="question-number">03</span><span class="quiz-question" tabindex="-1">Timeline?</span></legend>
+                <div class="chip-group" role="group" aria-label="Select a timeline">
+                  <button class="choice-chip" type="button" data-key="timeline" data-value="Now" aria-pressed="false">Now</button>
+                  <button class="choice-chip" type="button" data-key="timeline" data-value="This quarter" aria-pressed="false">This quarter</button>
+                  <button class="choice-chip" type="button" data-key="timeline" data-value="Just exploring" aria-pressed="false">Just exploring</button>
+                </div>
+                <button class="back-button" type="button" data-back="1">← Back</button>
+              </fieldset>
+
+              <div class="quiz-panel reveal-panel" data-panel="reveal" hidden>
+                <p class="reveal-label" tabindex="-1">Brief assembled</p>
+                <pre class="scope-summary" id="scope-summary" tabindex="0">&gt; SCOPE
+  domain    : —
+  stage     : —
+  timeline  : —</pre>
+                <div class="field">
+                  <label for="contact-email">Your email</label>
+                  <input id="contact-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" required aria-describedby="email-error" aria-invalid="false">
+                  <p class="field-error" id="email-error" role="status" hidden>Enter a valid email so we can reply.</p>
+                </div>
+                <div class="field">
+                  <label for="contact-note">Note <span>optional / 280 max</span></label>
+                  <textarea id="contact-note" name="note" rows="1" maxlength="280" placeholder="One line on the system — optional"></textarea>
+                </div>
+                <div class="hp-field" aria-hidden="true">
+                  <label for="contact-company">Company (leave blank)</label>
+                  <input id="contact-company" name="company" type="text" tabindex="-1" autocomplete="off">
+                </div>
+                <div class="quiz-actions">
+                  <button class="btn btn-primary transmit-button" type="submit" data-magnetic><span>Transmit</span><span class="btn-orb" aria-hidden="true">↘</span></button>
+                  <button class="copy-button" id="copy-brief" type="button">Copy brief</button>
+                  <button class="back-button" type="button" data-back="2">← Back</button>
+                </div>
+                <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
+                <p class="transmit-confirmation" id="transmit-confirmation" role="status" hidden>Brief sent — we'll reply from Ae.th.ry.on.ex.is@proton.me. No word in 2 days? Email us directly: <a href="mailto:Ae.th.ry.on.ex.is@proton.me">Ae.th.ry.on.ex.is@proton.me</a></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <a class="nudge-cta" id="nudge-cta" href="#is" aria-label="Scope a build — jump to the contact form">
+      <span class="nudge-dot" aria-hidden="true"></span>
+      <span class="nudge-text">Scope a build</span>
+      <span class="btn-orb" aria-hidden="true">↘</span>
+    </a>
+
+    <div class="modal-backdrop" id="lead-modal" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-body">
+        <button class="modal-close" id="modal-close" type="button" aria-label="Close">✕</button>
+        <p class="modal-kicker"><span class="live-dot" aria-hidden="true"></span> Open for work</p>
+        <h2 class="modal-title" id="modal-title">Have a system that needs building?</h2>
+        <p class="modal-body" id="modal-body">Tell us the shape of it in three taps — domain, stage, timeline. You'll get a plan, not a sales call.</p>
+        <div class="modal-actions">
+          <a class="btn btn-primary" id="modal-cta" href="#is" data-magnetic><span>Scope a build</span><span class="btn-orb" aria-hidden="true">↘</span></a>
+          <a class="btn btn-ghost" href="mailto:Ae.th.ry.on.ex.is@proton.me"><span>Email us</span><span class="btn-orb ghost" aria-hidden="true">→</span></a>
+        </div>
+        <button class="modal-dismiss" id="modal-dismiss" type="button">Not now</button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <div class="footer-top">
+          <p class="footer-word">AE·TH·RY·ON·EX·IS</p>
+          <p class="footer-expansion">aether · thought · rhythm · origin · execution · intelligence systems</p>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-contact">
+            <a href="mailto:Ae.th.ry.on.ex.is@proton.me">Email</a>
+            <a href="https://instagram.com/ae.th.ry.on.ex.is" target="_blank" rel="noopener">Instagram</a>
+          </div>
+          <p class="footer-copy">© 2026 AETHRYONEXIS — deliberately small.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
