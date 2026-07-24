@@ -1,4 +1,3 @@
-crypto/private-key.jwk
 *.private.jwk
 *.pem
 node_modules/

@@ -5,7 +5,7 @@ Vanilla HTML/CSS/JS · premium fonts embedded locally · no build step · no bac
 Designed to run 100% on **GitHub Pages**.
 
 - **Local preview:** `python3 -m http.server 8000` → <http://127.0.0.1:8000> (or open `index.html`)
-- **Hosting + contact-form setup:** see [SETUP.md](SETUP.md)
+- **Hosting + frontend setup:** see [SETUP.md](SETUP.md)
 
-The contact form is a 3-step scope quiz that delivers to your inbox via the FormSubmit relay
-(no backend), with a `mailto:` fallback. One-time activation is described in `SETUP.md`.
+The contact section is currently frontend-only: the scope quiz assembles a brief, opens a pre-filled
+email, and offers a copy fallback. Backend intake/reporting will live separately on Render later.

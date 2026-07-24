@@ -1,111 +1,81 @@
-# AETHRYONEXIS — setup, contact form & GitHub Pages hosting
+# AETHRYONEXIS — frontend setup
 
-A single-page, **fully static** site (vanilla HTML/CSS/JS). Fonts are embedded locally, there is
-no build step, no dependencies, and **no backend** — it is designed to run 100% on GitHub Pages.
+This folder is the static frontend for the AETHRYONEXIS site.
 
 ```
 index.html · styles.css · app.js · assets/fonts/*.woff2 · .nojekyll
 ```
 
-## Contact form — how it works
+There is no build step and no frontend backend dependency. Host this folder on GitHub Pages.
 
-The form is a 3-step "scope diagnostic" quiz (domain / stage / timeline) + your email. It has two
-delivery paths, both configured by the `CONFIG` object at the top of `app.js`:
+## Contact Flow
 
-- **Relay (default):** the brief is POSTed to **FormSubmit.co**, which emails it to
-  `CONFIG.contactEmail` **server-side** — the visitor does *not* need a mail client, and there is
-  **no backend to host**. This is what makes it work on plain GitHub Pages.
-- **mailto fallback:** if `formTarget` is `""` (or the relay call fails), it opens the visitor's
-  mail app pre-filled, plus a **Copy brief** button.
+The contact section is currently frontend-only:
 
-A hidden honeypot field blocks spam bots automatically.
+- The scope quiz assembles a small brief.
+- Submit opens the visitor's mail app with the brief pre-filled.
+- Copy brief remains available if mailto is not configured on the visitor's machine.
+- No submission relay or backend endpoint is wired into this frontend.
 
-> Why a relay at all? A static site (GitHub Pages) **cannot send email by itself** — something has
-> to carry it. FormSubmit is just that carrier; **hosting still lives entirely on GitHub Pages**.
-> The only zero-relay option is mailto, which depends on the visitor's mail app.
+When the Render backend is built, it should own contact intake, storage, spam controls, reporting,
+and any server-side notification delivery. At that point the frontend can POST to that backend.
 
-### One-time activation (required for the relay)
+## Analytics
 
-1. Deploy the site (below) or run it locally.
-2. Submit the form once yourself.
-3. FormSubmit emails **Ae.th.ry.on.ex.is@proton.me** a one-time **activation link** — click it.
-4. Done — every submission after that arrives in that inbox.
+Google Analytics 4 is config-gated in `app.js`.
 
-**Hide your email from the page (optional):** after activating, FormSubmit gives you a random
-alias (e.g. `a1b2c3...`). Put that in `formTarget` instead of the email address.
+1. Create a GA4 web data stream.
+2. Copy the Measurement ID, for example `G-XXXXXXXXXX`.
+3. Paste it into `CONFIG.gaMeasurementId` in `app.js`.
 
-**Turn the relay off:** set `formTarget: ""` in `app.js` to use mailto only.
+If `gaMeasurementId` is empty, the site loads no Google Analytics script. When set, the frontend
+sends the normal page view plus custom `section_view` and `section_dwell` events for sections marked
+with `data-section`.
 
-## End-to-end encryption
+## Planned Backend
 
-Every submission is **encrypted in the visitor's browser** with your public key
-(RSA-OAEP-4096 + AES-256-GCM, via the built-in Web Crypto API — no library, still self-contained)
-*before* it is sent. The relay, GitHub, and anyone on the network only ever see **ciphertext**;
-only your offline **private key** can read it.
+Keep this frontend on GitHub Pages. Build the backend separately on Render.com.
 
-- Your keys live in `crypto/`. **`crypto/private-key.jwk` is git-ignored — never commit or push it.**
-- **Read an inquiry:** open `crypto/decrypt.html`, load `private-key.jwk`, paste the blob from the
-  email, Decrypt.
-- **Rotate keys:** open `crypto/keygen.html`, generate a new pair, paste the new public key into
-  `CONFIG.publicKeyJwk` in `app.js`, keep the new private key safe. (Old blobs become unreadable
-  after rotation.)
-- Set `CONFIG.publicKeyJwk` to `null` to send plaintext instead. Full walkthrough: `crypto/README.md`.
+Expected backend responsibilities:
 
-## Spam protection (no CAPTCHA, no backend — honest version)
+- Contact submission API.
+- Data storage and reporting.
+- Server-side spam/rate-limit controls.
+- Notification delivery.
+- Health endpoint for uptime checks and keep-warm pings.
 
-Layered defense for a static site:
+Do not add backend code to this frontend folder.
 
-- **Honeypot** — a hidden field; bots that fill it are dropped. FormSubmit also enforces this
-  **server-side** (`_honey`), so it works even against direct POSTs to the relay.
-- **Time-trap** — submissions completed in under 2.5s (bot speed) are silently ignored.
-- **Relay filtering + rate limits** — the relay screens known spam and throttles floods.
-- **Encryption as a filter** — junk that isn't validly encrypted **won't decrypt**, so
-  `decrypt.html` discards it automatically; it never reaches your attention.
-- The **site can't be DDoS'd** — GitHub Pages is CDN-served; there's no server of yours to hit.
-
-**Limit:** with no backend and no CAPTCHA, a determined spammer can still POST junk to the relay.
-If that happens, **rotate the endpoint** (FormSubmit alias) or switch to a **Web3Forms** key with a
-**domain allowlist** + server-side filtering — the strongest no-CAPTCHA posture.
-
-## Run locally
+## Run Locally
 
 ```bash
-python3 -m http.server 8000        # then open http://127.0.0.1:8000
+python3 -m http.server 8000
 ```
-(or just open `index.html` directly.)
 
-## Host on GitHub Pages
+Then open <http://127.0.0.1:8000>.
+
+You can also open `index.html` directly.
+
+## Host On GitHub Pages
 
 This folder is already a git repo. Then:
 
 ```bash
 git add -A
-git commit -m "AETHRYONEXIS site"
+git commit -m "AETHRYONEXIS frontend"
 git branch -M main
 git remote add origin https://github.com/<you>/<repo>.git
 git push -u origin main
 ```
 
-On GitHub: **Settings → Pages → Build and deployment → Source: "Deploy from a branch" →
-Branch: `main` / Folder: `/ (root)` → Save.**
+On GitHub: Settings -> Pages -> Build and deployment -> Source: "Deploy from a branch" ->
+Branch: `main` / Folder: `/ (root)` -> Save.
 
-Your site goes live at **`https://<you>.github.io/<repo>/`** in about a minute.
+All asset paths are relative, so the site works under a GitHub Pages repo subpath.
 
-- All asset paths are **relative**, so it works under the `/<repo>/` subpath.
-- The included **`.nojekyll`** file tells GitHub to serve files as-is (no Jekyll processing).
-- Want it at the root (`https://<you>.github.io`)? Name the repo **`<you>.github.io`**.
-- Custom domain: **Settings → Pages → Custom domain**.
+## Editing Content
 
-## Editing content
-
-- The six-syllable name meanings, the Practice / Method / Engagements copy, and the single project
-  (**Bread Crumbs**) are plain text in `index.html`.
-- The contact email lives in `app.js` (`CONFIG.contactEmail` / `formTarget`) and in the `mailto:`
-  links in `index.html` (contact section + footer).
-
-## Notes
-
-- Client/project source is intentionally **not** linked publicly — more can be walked through on a
-  call.
-- Everything is self-contained: no CDNs, no web fonts, no trackers. The only network call the page
-  ever makes is the FormSubmit POST that happens **when someone submits the form**.
+- The page content lives in `index.html`.
+- The visual system lives in `styles.css`.
+- Interaction, the quiz, mailto compose, modal behavior, and GA4 tracking live in `app.js`.
+- The contact email appears in `app.js` and in `mailto:` links in `index.html`.
