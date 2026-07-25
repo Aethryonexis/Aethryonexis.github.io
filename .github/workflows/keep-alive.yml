@@ -12,7 +12,10 @@ name: keep-backend-warm
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    # Every 5 min (public repo = free minutes). GitHub's scheduler is best-effort and
+    # often delayed, so this is only a backup — the reliable keep-warm is an external
+    # monitor (UptimeRobot / cron-job.org) hitting the same /health URL every 5 min.
+    - cron: "*/5 * * * *"
   workflow_dispatch: {}
 
 permissions: {}
