@@ -33,6 +33,7 @@ const CONFIG = {
   initModal();
   initAnalytics();
   initBackendWarmup();
+  initParallax();
 
   // The name rail is a scroll-spy: the section crossing a stable viewport line owns the active syllable.
   function initScrollSpy() {
@@ -915,5 +916,37 @@ const CONFIG = {
         }, 45);
       }, index * 95);
     });
+  }
+
+  // Lightweight hero parallax: the logo drifts slower than the page (depth). Transform-only,
+  // rAF-throttled, capped, and skipped entirely under reduced-motion / no-JS.
+  function initParallax() {
+    const reduced =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      return;
+    }
+    const logo = document.querySelector(".hero-logo");
+    if (!logo) {
+      return;
+    }
+    let ticking = false;
+    function update() {
+      const y = Math.min(window.scrollY || 0, 900);
+      logo.style.transform = "translate3d(0," + (y * 0.14).toFixed(1) + "px,0)";
+      ticking = false;
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+    update();
   }
 })();

@@ -20,11 +20,8 @@
     <!-- loading animation -->
     <div class="loader" id="loader" role="status" aria-label="Loading AETHRYONEXIS">
       <div class="loader-glyph" aria-hidden="true">
-        <svg viewBox="0 0 64 64" width="64" height="64">
-          <circle class="lg-orbit" cx="32" cy="32" r="24" fill="none" stroke="var(--gold)" stroke-width="1.4" stroke-dasharray="80 26" stroke-linecap="round"></circle>
-          <path d="M17 46 32 18l10 19" fill="none" stroke="var(--platinum)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path>
-          <path d="M28 30 46 46M46 29 30 46" fill="none" stroke="var(--gold)" stroke-width="3.2" stroke-linecap="round"></path>
-        </svg>
+        <span class="loader-halo"></span>
+        <img class="loader-logo" src="assets/logo.png" alt="" width="96" height="96">
       </div>
       <p class="loader-word" aria-hidden="true">AE·TH·RY·ON·EX·IS</p>
       <div class="loader-bar" aria-hidden="true"><span></span></div>
@@ -42,13 +39,7 @@
 
     <header class="chrome">
       <a class="brandmark" href="#ae" aria-label="AETHRYONEXIS — home">
-        <span class="brandmark-glyph" aria-hidden="true">
-          <svg viewBox="0 0 32 32" width="18" height="18">
-            <circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="34 12" opacity="0.7"></circle>
-            <path d="M8 23 16 8l5 10" fill="none" stroke="currentColor" stroke-width="2"></path>
-            <path d="M14 15 23 23M23 14 15 23" fill="none" stroke="currentColor" stroke-width="2"></path>
-          </svg>
-        </span>
+        <img class="brandmark-logo" src="assets/logo.png" alt="" width="28" height="28">
         <span class="brandmark-text">AETHRYONEXIS</span>
       </a>
 
@@ -73,10 +64,10 @@
             <h1 class="wordmark" id="hero-title" aria-label="AETHRYONEXIS">
               <span class="syl">AE</span><span class="sep" aria-hidden="true">·</span><span class="syl">TH</span><span class="sep" aria-hidden="true">·</span><span class="syl">RY</span><span class="sep" aria-hidden="true">·</span><span class="syl">ON</span><span class="sep" aria-hidden="true">·</span><span class="syl">EX</span><span class="sep" aria-hidden="true">·</span><span class="syl gold">IS</span>
             </h1>
-            <p class="lede">We design, build, and ship production systems end to end. Consulting when the problem needs shaping. Delivery when it needs building.</p>
+            <p class="lede">We design, build, and ship production systems end to end — and the marketing and promotion that puts them in front of the right people.</p>
             <p class="sub-line">New name. Deliberately small. Work speaks first.</p>
             <ul class="domain-row" aria-label="Domains">
-              <li class="tag">Automation</li><li class="tag">AI</li><li class="tag">Security</li><li class="tag">Infrastructure</li><li class="tag">Web</li>
+              <li class="tag">Automation</li><li class="tag">AI</li><li class="tag">Security</li><li class="tag">Infrastructure</li><li class="tag">Web</li><li class="tag">Marketing</li><li class="tag">Promotion</li>
             </ul>
             <div class="cta-row">
               <a class="btn btn-primary" href="#is" data-magnetic><span>Scope a build</span><span class="btn-orb" aria-hidden="true">↘</span></a>
@@ -86,26 +77,10 @@
 
           <aside class="hero-panel reveal" aria-label="Studio status">
             <div class="hero-panel-core">
-              <div class="nexus">
-                <svg class="nexus-mark" viewBox="0 0 320 320" role="img" aria-labelledby="nexus-title">
-                  <title id="nexus-title">AETHRYONEXIS orbital nexus mark</title>
-                  <defs>
-                    <linearGradient id="ng" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0" stop-color="#F7E4A6"></stop><stop offset="0.5" stop-color="#E4C15C"></stop><stop offset="1" stop-color="#9C7A1E"></stop>
-                    </linearGradient>
-                  </defs>
-                  <g class="nexus-orbit" fill="none" stroke="url(#ng)" stroke-width="1.5">
-                    <circle cx="160" cy="160" r="132" stroke-dasharray="300 26 78 26 250 120" opacity="0.9"></circle>
-                    <circle cx="286" cy="96" r="7" fill="#F7E4A6" stroke="none"></circle>
-                    <circle cx="40" cy="205" r="4.5" fill="#E4C15C" stroke="none"></circle>
-                    <circle cx="238" cy="278" r="3.5" fill="#9C7A1E" stroke="none"></circle>
-                  </g>
-                  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M72 246 152 70l56 112" stroke="url(#ng)" stroke-width="16"></path>
-                    <path d="M128 158 236 250M236 148 132 250" stroke="#F4F2EC" stroke-width="13"></path>
-                    <path d="M152 70 208 182" stroke="#E4C15C" stroke-width="2.5"></path>
-                  </g>
-                </svg>
+              <div class="hero-logo">
+                <span class="hero-halo" aria-hidden="true"></span>
+                <span class="hero-halo hero-halo-2" aria-hidden="true"></span>
+                <img class="hero-logo-img" src="assets/logo.png" alt="AETHRYONEXIS — gold AX orbital logo" width="240" height="240">
               </div>
               <dl class="readout">
                 <div><dt>Status</dt><dd class="live"><span class="live-dot" aria-hidden="true"></span>Open for work</dd></div>
@@ -135,8 +110,8 @@
       <section class="section band-practice" id="th" data-section="th" aria-labelledby="th-title">
         <div class="wrap">
           <header class="section-head reveal">
-            <p class="kicker"><span>TH</span> / Practice <i>— 05 domains</i></p>
-            <h2 class="h2" id="th-title">What we build, and hold the line on.</h2>
+            <p class="kicker"><span>TH</span> / Practice <i>— 07 disciplines</i></p>
+            <h2 class="h2" id="th-title">What we build — and how we make it land.</h2>
           </header>
           <div class="bento bento-practice">
             <article class="card feat reveal"><p class="card-k">01 — Automation</p><h3 class="card-h">Automation</h3><p class="card-p">Replacing manual operations with systems. Pipelines, scrapers, orchestration, and automation layered onto software that was never built to expose an interface.</p></article>
@@ -144,6 +119,8 @@
             <article class="card reveal"><p class="card-k">03 — Security</p><h3 class="card-h">Security</h3><p class="card-p">Secure architecture, applied cryptography, threat modelling, hardening. Designed to survive review, not to pass a checklist.</p></article>
             <article class="card reveal"><p class="card-k">04 — Infrastructure</p><h3 class="card-h">Infrastructure</h3><p class="card-p">Deployment, hosting, scale. Systems that stay up, degrade gracefully, and are cheap to operate.</p></article>
             <article class="card reveal"><p class="card-k">05 — Web</p><h3 class="card-h">Web</h3><p class="card-p">Interfaces and services, front to back, held to the same standard as everything behind them.</p></article>
+            <article class="card reveal"><p class="card-k">06 — Marketing</p><h3 class="card-h">Marketing</h3><p class="card-p">Positioning, messaging, and go-to-market for technical products — translating what you built into why it matters, to the people who should care.</p></article>
+            <article class="card reveal"><p class="card-k">07 — Promotion</p><h3 class="card-h">Promotion</h3><p class="card-p">Campaigns, content, and channels that get the work seen — measured, iterated, and honest about what actually moves the needle.</p></article>
           </div>
         </div>
       </section>
@@ -240,6 +217,8 @@
                   <button class="choice-chip" type="button" data-key="domain" data-value="Security" aria-pressed="false">Security</button>
                   <button class="choice-chip" type="button" data-key="domain" data-value="Infrastructure" aria-pressed="false">Infrastructure</button>
                   <button class="choice-chip" type="button" data-key="domain" data-value="Web" aria-pressed="false">Web</button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Marketing" aria-pressed="false">Marketing</button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Promotion" aria-pressed="false">Promotion</button>
                 </div>
               </fieldset>
 

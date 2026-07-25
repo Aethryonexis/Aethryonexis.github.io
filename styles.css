@@ -89,6 +89,18 @@ body {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ---------- real brand logo + rotating gold halo ---------- */
+.brandmark-logo { width: 26px; height: 26px; display: block; }
+.loader-glyph { position: relative; display: grid; place-items: center; }
+.loader-logo { position: relative; z-index: 1; width: 92px; height: 92px; display: block; animation: logo-breathe 3.6s var(--ease) infinite; }
+.loader-halo { position: absolute; width: 150px; height: 150px; border-radius: 50%; pointer-events: none; background: conic-gradient(from 0deg, transparent, rgba(247, 228, 166, 0.42), transparent 55%); filter: blur(7px); animation: spin 3s linear infinite; }
+@keyframes logo-breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.02); } }
+
+.hero-logo { position: relative; display: grid; place-items: center; padding: 0.5rem 0; }
+.hero-logo-img { position: relative; z-index: 1; width: min(74%, 250px); height: auto; display: block; filter: drop-shadow(0 14px 44px rgba(228, 193, 92, 0.18)); }
+.hero-halo { position: absolute; width: min(96%, 330px); aspect-ratio: 1 / 1; border-radius: 50%; pointer-events: none; background: conic-gradient(from 0deg, transparent 0deg, rgba(247, 228, 166, 0.30) 40deg, transparent 130deg, transparent 210deg, rgba(228, 193, 92, 0.20) 250deg, transparent 330deg); filter: blur(16px); opacity: 0.75; animation: spin 20s linear infinite; }
+.hero-halo-2 { width: min(82%, 280px); background: radial-gradient(circle, rgba(228, 193, 92, 0.12), transparent 60%); filter: blur(24px); opacity: 1; animation: spin 30s linear infinite reverse; }
+
 /* ---------- primitives ---------- */
 a { color: var(--gold); text-decoration: none; }
 :where(a, button, input, textarea):focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 4px; }
