@@ -235,7 +235,7 @@ a { color: var(--gold); text-decoration: none; }
 .tl-step { position: relative; padding-left: 2.2rem; }
 .tl-dot { position: absolute; left: 0; top: 2px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gold); background: var(--bg-2); box-shadow: 0 0 0 4px rgba(228, 193, 92, 0.12); }
 .tl-num { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--gold); }
-.tl-step h3 { margin: 0.35rem 0 0.4rem; font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.82rem; color: var(--platinum); }
+.tl-step h3 { margin: 0.35rem 0 0.4rem; font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.82rem; color: var(--gold); }
 .tl-step p { margin: 0; color: var(--text); font-size: 0.92rem; line-height: 1.5; }
 
 /* ---------- featured work ---------- */
@@ -357,34 +357,17 @@ a { color: var(--gold); text-decoration: none; }
 .scroll-progress { position: fixed; top: 0; left: 0; right: 0; z-index: 60; height: 3px; pointer-events: none; }
 .scroll-progress span { display: block; height: 100%; width: 100%; transform: scaleX(0); transform-origin: left center; background: linear-gradient(90deg, var(--gold-lo), var(--gold) 55%, var(--gold-hi)); box-shadow: 0 0 14px rgba(228, 193, 92, 0.55); }
 
-/* ---------- hybrid horizontal scroll (method) ---------- */
-.hscroll { position: relative; padding-block: 0; }
-.hscroll-pin { padding-block: clamp(3.5rem, 8vw, 6rem); }
-.hscroll .section-head { margin-bottom: clamp(1.6rem, 3vw, 2.4rem); }
-.hscroll-hint { margin: 1.1rem 0 0; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--gold); opacity: 0.9; }
-.hscroll-viewport { overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-.hscroll-viewport::-webkit-scrollbar { display: none; }
-.hscroll-track { list-style: none; margin: 0; padding: 0.5rem clamp(20px, 4vw, 40px); display: flex; gap: clamp(0.8rem, 1.6vw, 1.2rem); width: max-content; }
-.hstep { scroll-snap-align: start; flex: 0 0 auto; width: min(82vw, 350px); display: flex; flex-direction: column; gap: 0.55rem; padding: clamp(1.5rem, 3vw, 2.1rem); border-radius: 18px; border: 1px solid var(--line); background: var(--card-bg); box-shadow: var(--inset), var(--drop); }
-.hstep-num { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--gold); }
-.hstep h3 { margin: 0.1rem 0 0; font-family: var(--display); font-weight: 700; font-size: clamp(1.35rem, 3vw, 1.85rem); letter-spacing: -0.02em; background: linear-gradient(120deg, var(--gold-hi), var(--gold) 55%, var(--gold-lo)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: var(--gold); }
-.hstep p { margin: 0; color: var(--text); font-size: 0.96rem; line-height: 1.55; }
-.hstep-end { background: linear-gradient(160deg, rgba(228, 193, 92, 0.15), rgba(255, 255, 255, 0.03)); border-color: var(--line-2); justify-content: center; }
-.hstep-end .btn { margin-top: 0.9rem; align-self: flex-start; }
-.hscroll-rail { height: 3px; margin: clamp(1.4rem, 3vw, 2rem) clamp(20px, 4vw, 40px) 0; border-radius: 3px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
-.hscroll-rail span { display: block; height: 100%; width: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-hi)); transform: scaleX(0.04); transform-origin: left center; }
-
-@media (min-width: 820px) and (prefers-reduced-motion: no-preference) {
-  .has-js .hscroll { height: 320vh; }
-  .has-js .hscroll-pin { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; padding-block: clamp(2rem, 5vh, 4rem); }
-  .has-js .hscroll-viewport { overflow: hidden; }
-  .has-js .hscroll-track { will-change: transform; }
-  .has-js .hscroll .hstep { width: min(38vw, 440px); }
+/* ---------- checkpoint scrolling (gentle scroll-snap) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  html.has-js { scroll-snap-type: y proximity; }
+  .has-js main > section { scroll-snap-align: start; scroll-snap-stop: normal; }
 }
 
-/* ---------- scroll reveal (JS-gated) ---------- */
-.has-js .reveal { opacity: 0; transform: translateY(36px) scale(0.988); filter: blur(8px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease), filter 0.9s var(--ease); }
+/* ---------- scroll reveal + cinematic zoom (JS-gated) ---------- */
+.has-js .reveal { opacity: 0; transform: translateY(34px) scale(0.965); filter: blur(8px); transition: opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease); }
 .has-js .reveal.in { opacity: 1; transform: none; filter: none; }
+.has-js .reveal-zoom { transform: translateY(44px) scale(0.9); filter: blur(12px); }
+.has-js .reveal-zoom.in { transform: none; filter: none; }
 .has-js .bento-practice .card:nth-child(2) { transition-delay: 0.05s; }
 .has-js .bento-practice .card:nth-child(3) { transition-delay: 0.1s; }
 .has-js .bento-practice .card:nth-child(4) { transition-delay: 0.15s; }
