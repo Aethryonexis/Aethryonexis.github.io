@@ -34,6 +34,9 @@ const CONFIG = {
   initAnalytics();
   initBackendWarmup();
   initParallax();
+  initSmoothScroll();
+  initScrollProgress();
+  initHybridScroll();
 
   // The name rail is a scroll-spy: the section crossing a stable viewport line owns the active syllable.
   function initScrollSpy() {
@@ -933,8 +936,8 @@ const CONFIG = {
     }
     let ticking = false;
     function update() {
-      const y = Math.min(window.scrollY || 0, 900);
-      logo.style.transform = "translate3d(0," + (y * 0.14).toFixed(1) + "px,0)";
+      const y = Math.min(window.scrollY || 0, 1000);
+      logo.style.transform = "translate3d(0," + (y * 0.18).toFixed(1) + "px,0)";
       ticking = false;
     }
     window.addEventListener(
@@ -947,6 +950,149 @@ const CONFIG = {
       },
       { passive: true }
     );
+    update();
+  }
+
+  // Robust in-page smooth scroll: intercept every "#id" link and land it at a fixed offset below
+  // the floating nav, so CTAs like "Scope a build" always reach the contact section exactly.
+  function initSmoothScroll() {
+    const reduced =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const OFFSET = 88;
+
+    document.addEventListener("click", function (event) {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+      const link = event.target.closest ? event.target.closest('a[href^="#"]') : null;
+      if (!link) {
+        return;
+      }
+      const hash = link.getAttribute("href");
+      if (!hash || hash.length < 2) {
+        return;
+      }
+      const target = document.getElementById(hash.slice(1));
+      if (!target) {
+        return;
+      }
+      event.preventDefault();
+      const top = target.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || 0) - OFFSET;
+      window.scrollTo({ top: Math.max(0, top), behavior: reduced ? "auto" : "smooth" });
+      if (window.history && typeof window.history.replaceState === "function") {
+        window.history.replaceState(null, "", hash);
+      }
+    });
+  }
+
+  // Thin gold bar at the very top that fills with page scroll progress.
+  function initScrollProgress() {
+    const bar = document.querySelector("#scroll-progress-bar");
+    if (!bar) {
+      return;
+    }
+    let ticking = false;
+    function update() {
+      ticking = false;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(Math.max((window.scrollY || 0) / max, 0), 1) : 0;
+      bar.style.transform = "scaleX(" + p.toFixed(4) + ")";
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", update);
+    update();
+  }
+
+  // Hybrid scroll: on desktop with motion allowed, the pinned section's inner track is driven
+  // horizontally by vertical scroll progress. On mobile / reduced-motion / no-JS it degrades to a
+  // native swipeable horizontal scroll (the CSS default) — always usable, never stuck.
+  function initHybridScroll() {
+    const reduced =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const blocks = Array.from(document.querySelectorAll("[data-hscroll]"))
+      .map(function (section) {
+        const track = section.querySelector("[data-hscroll-track]");
+        return {
+          section: section,
+          track: track,
+          viewport: track ? track.parentElement : null,
+          progress: section.querySelector("[data-hscroll-progress]")
+        };
+      })
+      .filter(function (o) {
+        return o.track && o.viewport;
+      });
+
+    if (blocks.length === 0) {
+      return;
+    }
+
+    function pinActive() {
+      return (
+        !reduced &&
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(min-width: 820px)").matches
+      );
+    }
+
+    function clamp01(n) {
+      return Math.min(Math.max(n, 0), 1);
+    }
+
+    let ticking = false;
+    function update() {
+      ticking = false;
+      const active = pinActive();
+
+      blocks.forEach(function (o) {
+        if (!active) {
+          // Native horizontal scroll: mirror the viewport's own scroll into the rail.
+          o.track.style.transform = "";
+          const d = o.viewport.scrollWidth - o.viewport.clientWidth;
+          const p = d > 0 ? clamp01(o.viewport.scrollLeft / d) : 0;
+          if (o.progress) {
+            o.progress.style.transform = "scaleX(" + (0.04 + p * 0.96).toFixed(3) + ")";
+          }
+          return;
+        }
+
+        const rect = o.section.getBoundingClientRect();
+        const total = o.section.offsetHeight - window.innerHeight;
+        const passed = Math.min(Math.max(-rect.top, 0), Math.max(total, 0));
+        const p = total > 0 ? clamp01(passed / total) : 0;
+        const distance = Math.max(o.track.scrollWidth - o.viewport.clientWidth, 0);
+        o.track.style.transform = "translate3d(" + (-(p * distance)).toFixed(1) + "px,0,0)";
+        if (o.progress) {
+          o.progress.style.transform = "scaleX(" + (0.04 + p * 0.96).toFixed(3) + ")";
+        }
+      });
+    }
+
+    function requestUpdate() {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    blocks.forEach(function (o) {
+      o.viewport.addEventListener("scroll", requestUpdate, { passive: true });
+    });
     update();
   }
 })();
