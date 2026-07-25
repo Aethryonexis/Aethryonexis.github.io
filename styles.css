@@ -146,6 +146,7 @@ a { color: var(--gold); text-decoration: none; }
 .hero-lead .eyebrow { margin-bottom: 1.4rem; }
 .wordmark { margin: 0; font-family: var(--display); font-weight: 900; font-size: clamp(1.9rem, 7.6vw, 4.2rem); line-height: 0.95; letter-spacing: -0.05em; color: var(--platinum); white-space: nowrap; }
 .wordmark .sep { color: var(--gold); font-weight: 300; margin: 0 0.04em; }
+.wordmark .syl.is-decrypting { color: var(--gold); text-shadow: 0 0 18px rgba(228, 193, 92, 0.35); }
 .wordmark .syl.gold { background: linear-gradient(180deg, var(--gold-hi), var(--gold-lo)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: var(--gold); }
 .lede { max-width: 46ch; margin: clamp(1.5rem, 3vw, 2rem) 0 0; color: #DEDDD6; font-size: clamp(1.04rem, 1.7vw, 1.26rem); line-height: 1.5; letter-spacing: -0.01em; }
 .sub-line { margin: 0.85rem 0 0; color: var(--muted); font-family: var(--mono); font-size: 0.8rem; }

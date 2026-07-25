@@ -24,6 +24,7 @@ const CONFIG = {
   }
 
   initLoader();
+  initDecrypt();
   initScrollSpy();
   initReveals();
   initMagnetic();
@@ -863,5 +864,56 @@ const CONFIG = {
       { rootMargin: "0px 0px 240px 0px", threshold: 0.01 }
     );
     observer.observe(contact);
+  }
+
+  // Signature: the wordmark resolves from scrambled ciphertext into AE·TH·RY·ON·EX·IS on load —
+  // an on-brand "decryption" for an applied-cryptography studio. Purely visual; the real text is
+  // always in the DOM (and the h1 aria-label), so no-JS and reduced-motion just show the name.
+  function initDecrypt() {
+    const syllables = Array.from(document.querySelectorAll(".wordmark .syl"));
+    if (syllables.length === 0) {
+      return;
+    }
+    const reduced =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      return;
+    }
+    const glyphs = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789/\\<>#*+=%$";
+    const rnd = function () {
+      return glyphs.charAt(Math.floor(Math.random() * glyphs.length));
+    };
+    syllables.forEach(function (el, index) {
+      const finalText = el.textContent;
+      const len = finalText.length;
+      const scrambleTicks = 9;
+      el.classList.add("is-decrypting");
+      window.setTimeout(function () {
+        let tick = 0;
+        const timer = window.setInterval(function () {
+          tick += 1;
+          if (tick < scrambleTicks) {
+            let out = "";
+            for (let c = 0; c < len; c++) {
+              out += rnd();
+            }
+            el.textContent = out;
+          } else {
+            const settled = tick - scrambleTicks;
+            let out = "";
+            for (let c = 0; c < len; c++) {
+              out += c < settled ? finalText.charAt(c) : rnd();
+            }
+            el.textContent = out;
+            if (settled >= len) {
+              el.textContent = finalText;
+              el.classList.remove("is-decrypting");
+              window.clearInterval(timer);
+            }
+          }
+        }, 45);
+      }, index * 95);
+    });
   }
 })();
