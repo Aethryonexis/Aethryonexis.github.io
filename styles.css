@@ -1302,3 +1302,30 @@ a { color: var(--gold); text-decoration: none; }
   border-color: rgba(249, 235, 187, 0.7);
 }
 @media (hover: none), (prefers-reduced-motion: reduce) { .cursor-glow { display: none !important; } }
+
+/* ============================================================
+   NAME DECODE — mapping arrows + nine-word philosophy
+   ============================================================ */
+.nd-arrow { flex: 0 0 auto; color: var(--gold-lo); font-size: 0.8rem; line-height: 1; }
+
+.nd-philosophy {
+  display: grid; gap: 0.6rem;
+  margin: clamp(1.4rem, 3vw, 2rem) 0 0;
+  padding: clamp(1.1rem, 2.4vw, 1.5rem);
+  border: 1px solid var(--line); border-radius: 18px;
+  background: linear-gradient(120deg, rgba(228, 193, 92, 0.06), rgba(255, 255, 255, 0.02) 60%);
+  box-shadow: var(--inset);
+}
+.nd-philosophy-label {
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--gold);
+}
+.nd-philosophy-words {
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(0.92rem, 2.2vw, 1.15rem); letter-spacing: -0.015em;
+  line-height: 1.7; color: var(--platinum);
+}
+.nd-philosophy-words i { font-style: normal; margin: 0 0.15em; color: var(--gold-lo); }
+
+/* hero syllables carry their meaning on hover */
+.wordmark .syl { cursor: help; }
