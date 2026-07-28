@@ -27,6 +27,7 @@ const CONFIG = {
   initDecrypt();
   initScrollSpy();
   initReveals();
+  initAnimationGating();
   initMagnetic();
   initTilt();
   initQuiz();
@@ -123,6 +124,41 @@ const CONFIG = {
     window.addEventListener("resize", requestSync);
     window.addEventListener("hashchange", requestSync);
     syncActiveSection();
+  }
+
+  // Pause every decorative animation whose element is off-screen. Browsers do NOT do this for
+  // you — a spinning halo or pulsing dot keeps compositing while scrolled far out of view, and
+  // with ~19 infinite animations that is a constant frame cost for something nobody can see.
+  function initAnimationGating() {
+    if (typeof window.IntersectionObserver !== "function") {
+      return;
+    }
+
+    const SELECTOR = [
+      ".hero-halo", ".hero-ring", ".hero-logo-img",
+      ".live-dot", ".beacon-dot", ".footer-logo",
+      ".scroll-hint-rail i", ".timeline", ".nudge-cta",
+      ".wordmark", ".h2", ".feature-title", ".footer-word",
+      ".footer-cta-line", ".modal-title"
+    ].join(", ");
+
+    const targets = Array.from(document.querySelectorAll(SELECTOR));
+    if (targets.length === 0) {
+      return;
+    }
+
+    const observer = new window.IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          entry.target.classList.toggle("anim-paused", !entry.isIntersecting);
+        });
+      },
+      { rootMargin: "120px 0px" }
+    );
+
+    targets.forEach(function (el) {
+      observer.observe(el);
+    });
   }
 
   // Reveal .reveal elements as they enter view. .has-js hides them first, so no-JS shows everything.
@@ -1299,78 +1335,10 @@ const CONFIG = {
     });
   }
 
-  // Smooth multi-layer parallax + scroll-zoom. Each layer eases (lerps) toward its target every
-  // frame, so motion stays buttery even when the wheel scrolls in coarse steps. Transform/opacity
-  // only; the rAF loop sleeps once everything has settled, and it is skipped under reduced-motion.
-  function initParallax() {
-    const reduced =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      return;
-    }
-
-    const q = function (sel) {
-      return document.querySelector(sel);
-    };
-
-    // Every [data-depth] element becomes a parallax layer automatically; the hero pieces get
-    // explicit tuning. speed = vertical drift factor, zoom = extra scale over the first ~700px.
-    const layers = Array.from(document.querySelectorAll("[data-depth]")).map(function (el) {
-      return { el: el, speed: parseFloat(el.dataset.depth) || 0, zoom: 0, y: 0, z: 0 };
-    });
-
-    [
-      { el: q(".wordmark"), speed: -0.05, zoom: 0 },
-      { el: q(".hero-logo"), speed: 0.16, zoom: 0.1 }
-    ].forEach(function (l) {
-      if (l.el) {
-        layers.push({ el: l.el, speed: l.speed, zoom: l.zoom, y: 0, z: 0 });
-      }
-    });
-
-    if (layers.length === 0) {
-      return;
-    }
-
-    let raf = null;
-    function frame() {
-      const scrollY = window.scrollY || window.pageYOffset || 0;
-      const capped = Math.min(scrollY, 1400);
-      let moving = false;
-
-      layers.forEach(function (l) {
-        const targetY = capped * l.speed;
-        l.y += (targetY - l.y) * 0.09;
-
-        let transform = "translate3d(0," + l.y.toFixed(2) + "px,0)";
-        if (l.zoom) {
-          const targetZ = (Math.min(scrollY, 700) / 700) * l.zoom;
-          l.z += (targetZ - l.z) * 0.09;
-          transform += " scale(" + (1 + l.z).toFixed(4) + ")";
-          if (Math.abs(targetZ - l.z) > 0.0004) {
-            moving = true;
-          }
-        }
-        l.el.style.transform = transform;
-        if (Math.abs(targetY - l.y) > 0.08) {
-          moving = true;
-        }
-      });
-
-      raf = moving ? window.requestAnimationFrame(frame) : null;
-    }
-
-    function kick() {
-      if (raf === null) {
-        raf = window.requestAnimationFrame(frame);
-      }
-    }
-
-    window.addEventListener("scroll", kick, { passive: true });
-    window.addEventListener("resize", kick);
-    kick();
-  }
+  // Parallax removed. It ran a rAF loop writing transforms to six full-viewport layers on every
+  // scroll frame, and the hero logo zoom it drove only became noticeable after the logo had
+  // already scrolled out of view — all cost, no visible benefit. The background is now static.
+  function initParallax() {}
 
   // Robust in-page smooth scroll: intercept every "#id" link and land it at a fixed offset below
   // the floating nav. Rather than the browser's native "smooth" (whose curve and duration vary by

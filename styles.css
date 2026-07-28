@@ -144,7 +144,7 @@ body {
    ATMOSPHERE — fixed parallax scene behind everything
    ============================================================ */
 .atmos { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--bg); pointer-events: none; }
-.atmos-layer, .atmos-rays, .atmos-grid, .atmos-vignette { position: absolute; inset: -12% -6%; will-change: transform; }
+.atmos-layer, .atmos-rays, .atmos-grid, .atmos-vignette { position: absolute; inset: -12% -6%; }
 
 /* deep base wash — warm gold horizon low, cold void high */
 .atmos-deep {
@@ -155,11 +155,18 @@ body {
 }
 
 /* slow gold light bodies */
-.orb { position: absolute; border-radius: 50%; filter: blur(110px); opacity: 0.20; will-change: transform; }
-.orb-1 { width: 46vmax; height: 46vmax; top: -18vmax; right: -14vmax; background: radial-gradient(circle at 50% 50%, rgba(228, 193, 92, 0.6), transparent 62%); animation: drift1 46s ease-in-out infinite; }
-.orb-2 { width: 34vmax; height: 34vmax; bottom: -16vmax; left: -12vmax; background: radial-gradient(circle at 50% 50%, rgba(176, 138, 40, 0.5), transparent 62%); animation: drift2 58s ease-in-out infinite; }
-@keyframes drift1 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-6vmax, 5vmax) scale(1.12); } }
-@keyframes drift2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(7vmax, -4vmax) scale(1.15); } }
+/* A large-radius radial gradient IS a soft glow — no filter needed. filter: blur(110px) on a
+   46vmax element forced a full-viewport GPU blur every single frame, which was the single
+   biggest cause of the site running at ~15fps while idle. The gradient is free by comparison. */
+.orb { position: absolute; border-radius: 50%; opacity: 0.55; }
+.orb-1 {
+  width: 46vmax; height: 46vmax; top: -18vmax; right: -14vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(228, 193, 92, 0.20) 0%, rgba(228, 193, 92, 0.10) 35%, rgba(228, 193, 92, 0.03) 60%, transparent 75%);
+}
+.orb-2 {
+  width: 34vmax; height: 34vmax; bottom: -16vmax; left: -12vmax;
+  background: radial-gradient(circle at 50% 50%, rgba(176, 138, 40, 0.18) 0%, rgba(176, 138, 40, 0.08) 40%, transparent 72%);
+}
 
 /* god rays — shafts of gold light, drifting */
 .atmos-rays {
@@ -171,10 +178,8 @@ body {
   );
   mask-image: radial-gradient(80% 70% at 60% 0%, #000 10%, transparent 72%);
   -webkit-mask-image: radial-gradient(80% 70% at 60% 0%, #000 10%, transparent 72%);
-  opacity: 0.7;
-  animation: rays 34s ease-in-out infinite;
+  opacity: 0.6;
 }
-@keyframes rays { 0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.55; } 50% { transform: translate3d(-40px, 0, 0); opacity: 0.8; } }
 
 /* architectural grid — the "building" substrate, in perspective */
 .atmos-grid {
@@ -851,16 +856,15 @@ a { color: var(--gold); text-decoration: none; }
   background: linear-gradient(180deg, var(--gold-hi), var(--gold));
   box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.45);
   font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
-  animation: nudge-bounce 2.8s var(--ease) 1.4s infinite;
+  animation: nudge-bounce 4.5s var(--ease) 2s infinite;
   transition: transform 0.5s var(--ease);
 }
-.nudge-cta::before { content: ""; position: absolute; inset: -1px; border-radius: 999px; box-shadow: 0 0 0 0 rgba(228, 193, 92, 0.5); animation: nudge-ring 2.8s var(--ease) 1.4s infinite; pointer-events: none; }
+
 .nudge-cta .nudge-dot { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #17130A; }
 .nudge-cta:hover { transform: translateY(-3px) scale(1.03); }
 .nudge-cta:active { transform: scale(0.98); }
 .nudge-cta.is-retired { opacity: 0; visibility: hidden; transform: translateY(16px) scale(0.9); pointer-events: none; animation: none; transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), visibility 0.5s; }
-@keyframes nudge-bounce { 0%, 55%, 100% { transform: translateY(0); } 68% { transform: translateY(-9px); } 82% { transform: translateY(-3px); } }
-@keyframes nudge-ring { 0% { box-shadow: 0 0 0 0 rgba(228, 193, 92, 0.5); } 70% { box-shadow: 0 0 0 16px rgba(228, 193, 92, 0); } 100% { box-shadow: 0 0 0 0 rgba(228, 193, 92, 0); } }
+@keyframes nudge-bounce { 0%, 70%, 100% { transform: translateY(0); } 80% { transform: translateY(-4px); } 90% { transform: translateY(-1px); } }
 
 /* ============================================================
    MODAL
@@ -1357,3 +1361,26 @@ html {
 
 /* scrollable panes inside the page (code blocks, the scope summary) keep the same language */
 .scope-summary::-webkit-scrollbar { height: 8px; }
+
+/* ============================================================
+   PERFORMANCE
+   ============================================================ */
+/* Off-screen elements stop animating entirely (set by initAnimationGating). */
+.anim-paused,
+.anim-paused * {
+  animation-play-state: paused !important;
+}
+
+/* Reveal without the blur filter: blur repaints the element on every frame of the transition,
+   which is the most expensive way to fade something in. Opacity + transform composite on the
+   GPU and look near-identical. */
+.has-js .reveal {
+  filter: none;
+  transform: translateY(28px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+.has-js .reveal.in { transform: none; }
+
+/* will-change only while an element is actually mid-transition; leaving it on permanently
+   pins a compositor layer per element and costs memory on mobile for no benefit. */
+.card, .why-card, .hero-logo, .wordmark { will-change: auto; }
