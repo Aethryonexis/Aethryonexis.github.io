@@ -7,8 +7,15 @@
       name="description"
       content="AETHRYONEXIS — a software engineering studio. We design, build, and ship production systems end to end: automation, AI, security, infrastructure, and web."
     >
-    <meta name="theme-color" content="#0B0D12">
+    <meta name="theme-color" content="#07080B">
     <title>AETHRYONEXIS — Software Engineering Studio</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AETHRYONEXIS — Software Engineering Studio">
+    <meta property="og:description" content="We design, build, and ship production systems end to end — automation, AI, security, infrastructure, and web.">
+    <meta property="og:image" content="assets/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg%20xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%230B0D12'/%3E%3Ccircle%20cx='32'%20cy='32'%20r='22'%20fill='none'%20stroke='%23E4C15C'%20stroke-width='1.5'%20stroke-dasharray='72%2020'/%3E%3Cpath%20d='M17%2046%2032%2018l10%2019'%20fill='none'%20stroke='%23F4F2EC'%20stroke-width='3.4'/%3E%3Cpath%20d='M28%2030%2046%2046M46%2029%2030%2046'%20fill='none'%20stroke='%23E4C15C'%20stroke-width='3.4'/%3E%3Ccircle%20cx='50'%20cy='18'%20r='3.4'%20fill='%23F7E4A6'/%3E%3C/svg%3E"
@@ -17,21 +24,27 @@
     <script src="app.js" defer></script>
   </head>
   <body>
-    <!-- loading animation -->
+    <!-- ============ LOADER ============ -->
     <div class="loader" id="loader" role="status" aria-label="Loading AETHRYONEXIS">
-      <div class="loader-glyph" aria-hidden="true">
-        <span class="loader-halo"></span>
-        <img class="loader-logo" src="assets/logo.png" alt="" width="96" height="96">
+      <div class="loader-inner">
+        <div class="loader-glyph" aria-hidden="true">
+          <span class="loader-halo"></span>
+          <span class="loader-ring"></span>
+          <img class="loader-logo" src="assets/logo.png" alt="" width="96" height="96">
+        </div>
+        <p class="loader-word" aria-hidden="true">AE·TH·RY·ON·EX·IS</p>
+        <div class="loader-bar" aria-hidden="true"><span></span></div>
       </div>
-      <p class="loader-word" aria-hidden="true">AE·TH·RY·ON·EX·IS</p>
-      <div class="loader-bar" aria-hidden="true"><span></span></div>
     </div>
 
-    <!-- looping animated background -->
-    <div class="bg-aurora" aria-hidden="true">
-      <span class="orb orb-1"></span>
-      <span class="orb orb-2"></span>
-      <span class="orb orb-3"></span>
+    <!-- ============ ATMOSPHERE (fixed, parallax-driven) ============ -->
+    <div class="atmos" aria-hidden="true">
+      <div class="atmos-layer atmos-deep" data-depth="0.04"></div>
+      <span class="orb orb-1" data-depth="0.10"></span>
+      <span class="orb orb-2" data-depth="0.16"></span>
+      <div class="atmos-rays" data-depth="0.07"></div>
+      <div class="atmos-grid" data-depth="0.22"></div>
+      <div class="atmos-vignette"></div>
     </div>
     <div class="bg-grain" aria-hidden="true"></div>
 
@@ -39,29 +52,68 @@
 
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <header class="chrome">
-      <a class="brandmark" href="#ae" aria-label="AETHRYONEXIS — home">
-        <img class="brandmark-logo" src="assets/logo.png" alt="" width="28" height="28">
-        <span class="brandmark-text">AETHRYONEXIS</span>
-      </a>
+    <!-- ============ HEADER ============ -->
+    <header class="chrome" id="chrome">
+      <div class="chrome-shell">
+        <div class="chrome-core">
+          <a class="brandmark" href="#home" aria-label="AETHRYONEXIS — home">
+            <span class="brandmark-badge" aria-hidden="true">
+              <img class="brandmark-logo" src="assets/logo.png" alt="" width="28" height="28">
+            </span>
+            <span class="brandmark-text">
+              <span class="brandmark-name">AETHRYONEXIS</span>
+              <span class="brandmark-sub">Engineering studio</span>
+            </span>
+          </a>
 
-      <nav class="index-rail" aria-label="Section index">
-        <a class="index-link is-active" href="#ae" data-target="ae" aria-current="location" aria-label="AE — Aether — Studio"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">AE</span></a>
-        <a class="index-link" href="#th" data-target="th" aria-label="TH — Thought — Practice"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">TH</span></a>
-        <a class="index-link" href="#ry" data-target="ry" aria-label="RY — Rhythm — Method"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">RY</span></a>
-        <a class="index-link" href="#on" data-target="on" aria-label="ON — Origin — Work"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">ON</span></a>
-        <a class="index-link" href="#ex" data-target="ex" aria-label="EX — Execution — Engagements"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">EX</span></a>
-        <a class="index-link" href="#is" data-target="is" aria-label="IS — Intelligence Systems — Contact"><span class="index-node" aria-hidden="true"></span><span aria-hidden="true">IS</span></a>
-      </nav>
+          <nav class="index-rail" aria-label="Section index">
+            <span class="rail-pill" id="rail-pill" aria-hidden="true"></span>
+            <a class="index-link is-active" href="#services" data-target="services" aria-current="location">Services</a>
+            <a class="index-link" href="#why" data-target="why">Why us</a>
+            <a class="index-link" href="#work" data-target="work">Work</a>
+            <a class="index-link" href="#process" data-target="process">Process</a>
+            <a class="index-link" href="#stack" data-target="stack">Stack</a>
+            <a class="index-link" href="#contact" data-target="contact">Contact</a>
+          </nav>
 
-      <a class="chrome-cta" href="#is"><span>Start a build</span><span class="btn-orb" aria-hidden="true">↗</span></a>
+          <div class="chrome-end">
+            <a class="chrome-cta" href="#contact"><span class="chrome-cta-label">Start a build</span><span class="btn-orb" aria-hidden="true">↗</span></a>
+            <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+              <span class="menu-bars" aria-hidden="true"><i></i><i></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
     </header>
+
+    <!-- ============ MOBILE MENU ============ -->
+    <div class="menu-overlay" id="mobile-menu" hidden>
+      <nav class="menu-panel" aria-label="Menu">
+        <p class="menu-kicker">Index</p>
+        <ul class="menu-list">
+          <li style="--i:0"><a href="#services" data-menu-link><span class="menu-syl">01</span><span class="menu-word">Services</span><span class="menu-go" aria-hidden="true">↗</span></a></li>
+          <li style="--i:1"><a href="#why" data-menu-link><span class="menu-syl">02</span><span class="menu-word">Why us</span><span class="menu-go" aria-hidden="true">↗</span></a></li>
+          <li style="--i:2"><a href="#work" data-menu-link><span class="menu-syl">03</span><span class="menu-word">Work</span><span class="menu-go" aria-hidden="true">↗</span></a></li>
+          <li style="--i:3"><a href="#process" data-menu-link><span class="menu-syl">04</span><span class="menu-word">Process</span><span class="menu-go" aria-hidden="true">↗</span></a></li>
+          <li style="--i:4"><a href="#stack" data-menu-link><span class="menu-syl">05</span><span class="menu-word">Stack</span><span class="menu-go" aria-hidden="true">↗</span></a></li>
+          <li style="--i:5"><a href="#engagements" data-menu-link><span class="menu-syl">06</span><span class="menu-word">Engagements</span><span class="menu-go" aria-hidden="true">↗</span></a></li>
+          <li style="--i:6"><a href="#contact" data-menu-link><span class="menu-syl">07</span><span class="menu-word">Contact</span><span class="menu-go" aria-hidden="true">↗</span></a></li>
+        </ul>
+        <div class="menu-foot" style="--i:7">
+          <a class="btn btn-primary" href="#contact" data-menu-link><span>Scope a build</span><span class="btn-orb" aria-hidden="true">↘</span></a>
+          <a class="menu-mail" href="mailto:Ae.th.ry.on.ex.is@proton.me">Ae.th.ry.on.ex.is@proton.me</a>
+        </div>
+      </nav>
+    </div>
 
     <main id="main-content">
       <!-- ===================== HERO / AE ===================== -->
-      <section class="hero" id="ae" data-section="ae" aria-labelledby="hero-title">
+      <section class="hero" id="home" data-section="home" aria-labelledby="hero-title">
+        <div class="hero-glow" aria-hidden="true" data-depth="0.12"></div>
+
         <div class="wrap hero-grid">
           <div class="hero-lead reveal">
+            <p class="beacon"><span class="beacon-dot" aria-hidden="true"></span>Open for work — taking new projects</p>
             <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Software engineering studio</p>
             <h1 class="wordmark" id="hero-title" aria-label="AETHRYONEXIS">
               <span class="syl">AE</span><span class="sep" aria-hidden="true">·</span><span class="syl">TH</span><span class="sep" aria-hidden="true">·</span><span class="syl">RY</span><span class="sep" aria-hidden="true">·</span><span class="syl">ON</span><span class="sep" aria-hidden="true">·</span><span class="syl">EX</span><span class="sep" aria-hidden="true">·</span><span class="syl gold">IS</span>
@@ -72,8 +124,8 @@
               <li class="tag">Automation</li><li class="tag">AI</li><li class="tag">Security</li><li class="tag">Infrastructure</li><li class="tag">Web</li><li class="tag">Marketing</li><li class="tag">Promotion</li>
             </ul>
             <div class="cta-row">
-              <a class="btn btn-primary" href="#is" data-magnetic><span>Scope a build</span><span class="btn-orb" aria-hidden="true">↘</span></a>
-              <a class="btn btn-ghost" href="#on"><span>See the work</span><span class="btn-orb ghost" aria-hidden="true">→</span></a>
+              <a class="btn btn-primary" href="#contact" data-magnetic><span>Scope a build</span><span class="btn-orb" aria-hidden="true">↘</span></a>
+              <a class="btn btn-ghost" href="#work"><span>See the work</span><span class="btn-orb ghost" aria-hidden="true">→</span></a>
             </div>
           </div>
 
@@ -82,6 +134,7 @@
               <div class="hero-logo">
                 <span class="hero-halo" aria-hidden="true"></span>
                 <span class="hero-halo hero-halo-2" aria-hidden="true"></span>
+                <span class="hero-ring" aria-hidden="true"></span>
                 <img class="hero-logo-img" src="assets/logo.png" alt="AETHRYONEXIS — gold AX orbital logo" width="240" height="240">
               </div>
               <dl class="readout">
@@ -106,159 +159,522 @@
             <li class="nd-item"><span class="nd-syl">Is</span><span class="nd-name">Intelligence Systems</span><span class="nd-desc">AI and software</span></li>
           </ul>
         </div>
+
+        <a class="scroll-hint" href="#services" aria-label="Scroll to practice">
+          <span class="scroll-hint-rail" aria-hidden="true"><i></i></span>
+          <span aria-hidden="true">Scroll</span>
+        </a>
       </section>
 
       <!-- ===================== PRACTICE / TH ===================== -->
-      <section class="section band-practice" id="th" data-section="th" aria-labelledby="th-title">
+      <section class="section band-practice" id="services" data-section="services" aria-labelledby="services-title">
         <div class="wrap">
-          <header class="section-head reveal reveal-zoom">
-            <p class="kicker"><span>TH</span> / Practice <i>— 07 disciplines</i></p>
-            <h2 class="h2" id="th-title">What we build — and how we make it land.</h2>
+          <header class="section-head reveal">
+            <p class="kicker"><span>01</span> / Services <i>— nine disciplines</i></p>
+            <h2 class="h2" id="services-title">What we build — and how we make it land.</h2>
+            <p class="section-lede">One studio, end to end. You don't hand off between a dev shop, a security consultant, and an agency — we cover the whole path from architecture to the campaign that launches it.</p>
           </header>
+
           <div class="bento bento-practice">
-            <article class="card feat reveal"><p class="card-k">01 — Automation</p><h3 class="card-h">Automation</h3><p class="card-p">Replacing manual operations with systems. Pipelines, scrapers, orchestration, and automation layered onto software that was never built to expose an interface.</p></article>
-            <article class="card reveal"><p class="card-k">02 — AI</p><h3 class="card-h">AI Systems</h3><p class="card-p">LLM-backed tooling, retrieval, and inference plumbing — built to be observable and debuggable, not demoed once and abandoned.</p></article>
-            <article class="card reveal"><p class="card-k">03 — Security</p><h3 class="card-h">Security</h3><p class="card-p">Secure architecture, applied cryptography, threat modelling, hardening. Designed to survive review, not to pass a checklist.</p></article>
-            <article class="card reveal"><p class="card-k">04 — Infrastructure</p><h3 class="card-h">Infrastructure</h3><p class="card-p">Deployment, hosting, scale. Systems that stay up, degrade gracefully, and are cheap to operate.</p></article>
-            <article class="card reveal"><p class="card-k">05 — Web</p><h3 class="card-h">Web</h3><p class="card-p">Interfaces and services, front to back, held to the same standard as everything behind them.</p></article>
-            <article class="card reveal"><p class="card-k">06 — Marketing</p><h3 class="card-h">Marketing</h3><p class="card-p">Positioning, messaging, and go-to-market for technical products — translating what you built into why it matters, to the people who should care.</p></article>
-            <article class="card reveal"><p class="card-k">07 — Promotion</p><h3 class="card-h">Promotion</h3><p class="card-p">Campaigns, content, and channels that get the work seen — measured, iterated, and honest about what actually moves the needle.</p></article>
+            <article class="card feat reveal" data-tilt><div class="card-core">
+              <p class="card-k">01 — AI Systems</p>
+              <h3 class="card-h">AI Systems</h3>
+              <p class="card-p">LLM-backed tooling, retrieval pipelines, agents, and inference plumbing — built to be observable and debuggable, not demoed once and abandoned. Evaluation harnesses, prompt versioning, cost controls, and fallbacks for when the model is wrong.</p>
+              <ul class="card-tags"><li>RAG</li><li>Agents</li><li>Fine-tuning</li><li>Evals</li><li>Inference</li></ul>
+            </div></article>
+
+            <article class="card reveal" data-tilt><div class="card-core">
+              <p class="card-k">02 — Automation</p>
+              <h3 class="card-h">Automation</h3>
+              <p class="card-p">Replacing manual operations with systems. Pipelines, scrapers, orchestration, and automation layered onto software that was never built to expose an interface.</p>
+              <ul class="card-tags"><li>Pipelines</li><li>Scrapers</li><li>Workflows</li></ul>
+            </div></article>
+
+            <article class="card reveal" data-tilt><div class="card-core">
+              <p class="card-k">03 — Cybersecurity</p>
+              <h3 class="card-h">Cybersecurity</h3>
+              <p class="card-p">Secure architecture, applied cryptography, threat modelling, and hardening. Designed to survive review, not to pass a checklist.</p>
+              <ul class="card-tags"><li>Threat models</li><li>Crypto</li><li>Hardening</li><li>Audits</li></ul>
+            </div></article>
+
+            <article class="card reveal" data-tilt><div class="card-core">
+              <p class="card-k">04 — Infrastructure</p>
+              <h3 class="card-h">Infrastructure</h3>
+              <p class="card-p">Deployment, hosting, and scale. Systems that stay up, degrade gracefully, and are cheap to operate — with the observability to prove it.</p>
+              <ul class="card-tags"><li>CI/CD</li><li>Cloud</li><li>Monitoring</li></ul>
+            </div></article>
+
+            <article class="card reveal" data-tilt><div class="card-core">
+              <p class="card-k">05 — Web</p>
+              <h3 class="card-h">Web Development</h3>
+              <p class="card-p">Interfaces and services, front to back, held to the same standard as everything behind them. Fast, accessible, and built to be maintained.</p>
+              <ul class="card-tags"><li>React</li><li>APIs</li><li>Real-time</li></ul>
+            </div></article>
+
+            <article class="card reveal" data-tilt><div class="card-core">
+              <p class="card-k">06 — Mobile</p>
+              <h3 class="card-h">Android Development</h3>
+              <p class="card-p">Native and cross-platform Android applications — offline-first where it matters, with real state management and release pipelines that don't break on launch day.</p>
+              <ul class="card-tags"><li>Kotlin</li><li>Play Store</li><li>Offline-first</li></ul>
+            </div></article>
+
+            <article class="card reveal" data-tilt><div class="card-core">
+              <p class="card-k">07 — Consultancy</p>
+              <h3 class="card-h">Consultancy</h3>
+              <p class="card-p">Architecture review, technical due diligence, and a second opinion you can act on. We tell you what's actually wrong, what it costs to fix, and what you can safely ignore.</p>
+              <ul class="card-tags"><li>Architecture</li><li>Due diligence</li><li>Reviews</li></ul>
+            </div></article>
+
+            <article class="card reveal" data-tilt><div class="card-core">
+              <p class="card-k">08 — Growth</p>
+              <h3 class="card-h">Marketing &amp; Promotion</h3>
+              <p class="card-p">Positioning, messaging, and go-to-market for technical products — plus the campaigns and channels that get the work seen. Measured, iterated, and honest about what moves the needle.</p>
+              <ul class="card-tags"><li>Positioning</li><li>Campaigns</li><li>Analytics</li></ul>
+            </div></article>
+
+            <article class="card reveal" data-tilt><div class="card-core">
+              <p class="card-k">09 — Screening</p>
+              <h3 class="card-h">Applicant Screening</h3>
+              <p class="card-p">Technical screening built by people who actually ship. Role-accurate assessments, structured rubrics, and signal on whether a candidate can do the work — not whether they memorised puzzles.</p>
+              <ul class="card-tags"><li>Assessments</li><li>Rubrics</li><li>Interviews</li></ul>
+            </div></article>
           </div>
         </div>
       </section>
 
-      <!-- ===================== METHOD / RY ===================== -->
-      <section class="section band-method" id="ry" data-section="ry" aria-labelledby="ry-title">
+      <!-- ===================== WHY US ===================== -->
+      <section class="section band-why" id="why" data-section="why" aria-labelledby="why-title">
         <div class="wrap">
-          <header class="section-head reveal reveal-zoom">
-            <p class="kicker"><span>RY</span> / Method <i>— scope to hand off</i></p>
-            <h2 class="h2" id="ry-title">A rhythm, not a ritual.</h2>
+          <header class="section-head reveal">
+            <p class="kicker"><span>02</span> / Why us <i>— what you actually get</i></p>
+            <h2 class="h2" id="why-title">Why hand it to us.</h2>
+            <p class="section-lede">Most teams get one of two things: a shop that builds fast and leaves you a mess, or a consultancy that writes a document and never ships. We do the whole thing, and we hand it back so you can run it without us.</p>
           </header>
-          <ol class="timeline">
-            <li class="tl-step reveal reveal-zoom"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">01</span><h3>Scope</h3><p>Understand the system before touching it.</p></li>
-            <li class="tl-step reveal reveal-zoom"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">02</span><h3>Architect</h3><p>Decide the tradeoffs explicitly. Write them down.</p></li>
-            <li class="tl-step reveal reveal-zoom"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">03</span><h3>Build</h3><p>Ship in slices. Nothing sits unmerged for a month.</p></li>
-            <li class="tl-step reveal reveal-zoom"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">04</span><h3>Harden</h3><p>Tests, threat model, failure modes, observability.</p></li>
-            <li class="tl-step reveal reveal-zoom"><span class="tl-dot" aria-hidden="true"></span><span class="tl-num">05</span><h3>Hand off</h3><p>Documented, reproducible, and yours to run.</p></li>
-          </ol>
+
+          <div class="why-grid">
+            <article class="why-card reveal"><div class="why-core">
+              <span class="why-num" aria-hidden="true">01</span>
+              <h3 class="why-h">You own everything</h3>
+              <p class="why-p">Documented, reproducible, and yours to run. No proprietary lock-in, no dependency on us to keep the lights on. If you never call us again, everything still works.</p>
+            </div></article>
+
+            <article class="why-card reveal"><div class="why-core">
+              <span class="why-num" aria-hidden="true">02</span>
+              <h3 class="why-h">Security is not an add-on</h3>
+              <p class="why-p">Threat modelling and applied cryptography are part of how we build, not a phase we bolt on at the end. Signed payloads, race-safe writes, and real auth on day one.</p>
+            </div></article>
+
+            <article class="why-card reveal"><div class="why-core">
+              <span class="why-num" aria-hidden="true">03</span>
+              <h3 class="why-h">Deliberately small</h3>
+              <p class="why-p">You talk to the engineer building your system — not an account manager relaying messages. Fewer people, less translation loss, faster decisions.</p>
+            </div></article>
+
+            <article class="why-card reveal"><div class="why-core">
+              <span class="why-num" aria-hidden="true">04</span>
+              <h3 class="why-h">We ship in slices</h3>
+              <p class="why-p">Nothing sits unmerged for a month. You see working software early and often, which means you can change your mind before it gets expensive.</p>
+            </div></article>
+
+            <article class="why-card reveal"><div class="why-core">
+              <span class="why-num" aria-hidden="true">05</span>
+              <h3 class="why-h">Built to survive review</h3>
+              <p class="why-p">Tests, failure modes, and observability are part of the deliverable. When your investor's technical advisor opens the repo, it holds up.</p>
+            </div></article>
+
+            <article class="why-card reveal"><div class="why-core">
+              <span class="why-num" aria-hidden="true">06</span>
+              <h3 class="why-h">Straight answers</h3>
+              <p class="why-p">If your idea has a fatal flaw, we say so before you pay us to build it. If something is cheaper to buy than build, we tell you that too.</p>
+            </div></article>
+          </div>
+
+          <!-- client reviews -->
+          <div class="reviews reveal">
+            <p class="reviews-head">What clients say <i>— anonymised at client request</i></p>
+            <div class="reviews-grid">
+              <figure class="review">
+                <div class="review-core">
+                  <blockquote><p>They found a race condition in our order assignment that we'd been blaming on drivers for months. Fixed it in two days and then showed us how to test for it ourselves.</p></blockquote>
+                  <figcaption><span class="review-who">Owner</span><span class="review-role">Bakery delivery business</span></figcaption>
+                </div>
+              </figure>
+              <figure class="review">
+                <div class="review-core">
+                  <blockquote><p>We came in wanting an app. They pushed back and scoped the actual problem first, which cut the build in half. The handover docs were good enough that our own developer picked it up cold.</p></blockquote>
+                  <figcaption><span class="review-who">Founder</span><span class="review-role">Logistics startup</span></figcaption>
+                </div>
+              </figure>
+              <figure class="review">
+                <div class="review-core">
+                  <blockquote><p>Delivery addresses used to be spoofable and we didn't know. They signed them, explained exactly why it mattered, and it hasn't been an issue since.</p></blockquote>
+                  <figcaption><span class="review-who">Operations lead</span><span class="review-role">Last-mile delivery</span></figcaption>
+                </div>
+              </figure>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- ===================== WORK / ON ===================== -->
-      <section class="section band-work" id="on" data-section="on" aria-labelledby="on-title">
+            <!-- ===================== WORK / ON ===================== -->
+      <section class="section band-work" id="work" data-section="work" aria-labelledby="work-title">
         <div class="wrap">
-          <header class="section-head reveal reveal-zoom">
-            <p class="kicker"><span>ON</span> / Selected work <i>— a recent build</i></p>
-            <h2 class="h2" id="on-title">One we can talk about.</h2>
+          <header class="section-head reveal">
+            <p class="kicker"><span>03</span> / Work <i>— selected builds</i></p>
+            <h2 class="h2" id="work-title">One we can talk about.</h2>
           </header>
           <article class="feature reveal">
-            <div class="feature-body">
-              <p class="feature-tag">Bakery delivery · production</p>
-              <h3 class="feature-title">Bread Crumbs</h3>
-              <p class="feature-desc">A bakery delivery application built around three roles — customer, owner, and driver. Real-time ordering, live driver tracking on routed maps, tamper-proof delivery addresses, and race-safe order assignment, built to stay correct under real traffic.</p>
-              <ul class="feature-points">
-                <li>Live driver tracking on routed maps</li>
-                <li>Signed delivery addresses — no coordinate spoofing</li>
-                <li>Atomic, race-safe order assignment</li>
-                <li>Real-time updates across all three roles</li>
-              </ul>
-              <p class="stack">React · Node.js · Socket.IO · MongoDB · OSRM</p>
+            <div class="feature-core">
+              <div class="feature-body">
+                <p class="feature-tag">Bakery delivery · production</p>
+                <h3 class="feature-title">Bread Crumbs</h3>
+                <p class="feature-desc">A bakery delivery application built around three roles — customer, owner, and driver. Real-time ordering, live driver tracking on routed maps, tamper-proof delivery addresses, and race-safe order assignment, built to stay correct under real traffic.</p>
+                <ul class="feature-points">
+                  <li>Live driver tracking on routed maps</li>
+                  <li>Signed delivery addresses — no coordinate spoofing</li>
+                  <li>Atomic, race-safe order assignment</li>
+                  <li>Real-time updates across all three roles</li>
+                </ul>
+                <p class="stack">React · Node.js · Socket.IO · MongoDB · OSRM</p>
+              </div>
+              <aside class="feature-spec" aria-label="Roles">
+                <p class="fs-head">// roles</p>
+                <ul>
+                  <li><span>01</span> Customer — order, track, pay</li>
+                  <li><span>02</span> Owner — menu, orders, dispatch</li>
+                  <li><span>03</span> Driver — assigned routes, live GPS</li>
+                </ul>
+                <p class="fs-note">Client code is kept private.</p>
+              </aside>
             </div>
-            <aside class="feature-spec" aria-label="Roles">
-              <p class="fs-head">// roles</p>
-              <ul>
-                <li><span>01</span> Customer — order, track, pay</li>
-                <li><span>02</span> Owner — menu, orders, dispatch</li>
-                <li><span>03</span> Driver — assigned routes, live GPS</li>
-              </ul>
-              <p class="fs-note">Client code is kept private.</p>
-            </aside>
           </article>
           <p class="work-note">We keep client work private — more can be walked through on a call.</p>
         </div>
       </section>
 
-      <!-- ===================== ENGAGEMENTS / EX ===================== -->
-      <section class="section band-eng" id="ex" data-section="ex" aria-labelledby="ex-title">
+<!-- ===================== METHOD / RY ===================== -->
+      <section class="section band-method" id="process" data-section="process" aria-labelledby="process-title">
         <div class="wrap">
-          <header class="section-head reveal reveal-zoom">
-            <p class="kicker"><span>EX</span> / Engagements <i>— how we work together</i></p>
-            <h2 class="h2" id="ex-title">Four ways in.</h2>
+          <header class="section-head reveal">
+            <p class="kicker"><span>04</span> / Process <i>— scope to hand off</i></p>
+            <h2 class="h2" id="process-title">A rhythm, not a ritual.</h2>
+            <p class="section-lede">Five phases, every engagement. You always know which one you're in, what comes out of it, and what it costs you to change your mind.</p>
+          </header>
+
+          <ol class="phases">
+            <li class="phase reveal">
+              <div class="phase-core">
+                <div class="phase-top">
+                  <span class="phase-num" aria-hidden="true">01</span>
+                  <span class="phase-line" aria-hidden="true"></span>
+                </div>
+                <h3 class="phase-h">Scope</h3>
+                <p class="phase-p">Understand the system before touching it. We map what exists, what actually hurts, and what success looks like in measurable terms.</p>
+                <p class="phase-out"><span>Deliverable</span> Written scope, constraints, and a fixed estimate.</p>
+              </div>
+            </li>
+            <li class="phase reveal">
+              <div class="phase-core">
+                <div class="phase-top">
+                  <span class="phase-num" aria-hidden="true">02</span>
+                  <span class="phase-line" aria-hidden="true"></span>
+                </div>
+                <h3 class="phase-h">Architect</h3>
+                <p class="phase-p">Decide the tradeoffs explicitly and write them down — what we optimise for, what we deliberately give up, and the failure modes we accept.</p>
+                <p class="phase-out"><span>Deliverable</span> Architecture doc, data model, threat model.</p>
+              </div>
+            </li>
+            <li class="phase reveal">
+              <div class="phase-core">
+                <div class="phase-top">
+                  <span class="phase-num" aria-hidden="true">03</span>
+                  <span class="phase-line" aria-hidden="true"></span>
+                </div>
+                <h3 class="phase-h">Build</h3>
+                <p class="phase-p">Ship in slices. Nothing sits unmerged for a month, so you see working software early and can redirect before it gets expensive.</p>
+                <p class="phase-out"><span>Deliverable</span> Working increments, weekly, in your repo.</p>
+              </div>
+            </li>
+            <li class="phase reveal">
+              <div class="phase-core">
+                <div class="phase-top">
+                  <span class="phase-num" aria-hidden="true">04</span>
+                  <span class="phase-line" aria-hidden="true"></span>
+                </div>
+                <h3 class="phase-h">Harden</h3>
+                <p class="phase-p">Tests, threat model verification, failure modes, and observability. We try to break it on purpose before real traffic does it for us.</p>
+                <p class="phase-out"><span>Deliverable</span> Test suite, monitoring, incident runbook.</p>
+              </div>
+            </li>
+            <li class="phase reveal">
+              <div class="phase-core">
+                <div class="phase-top">
+                  <span class="phase-num" aria-hidden="true">05</span>
+                  <span class="phase-line phase-line-end" aria-hidden="true"></span>
+                </div>
+                <h3 class="phase-h">Hand off</h3>
+                <p class="phase-p">Documented, reproducible, and yours to run. We walk your team through it until they can operate and extend it without us.</p>
+                <p class="phase-out"><span>Deliverable</span> Docs, walkthrough, full ownership.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ===================== STACK ===================== -->
+      <section class="section band-stack" id="stack" data-section="stack" aria-labelledby="stack-title">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="kicker"><span>05</span> / Stack <i>— what we build on</i></p>
+            <h2 class="h2" id="stack-title">Tools, and how we prove it works.</h2>
+            <p class="section-lede">We pick boring, well-understood tools by default and reach for something exotic only when the problem genuinely demands it. Here's the full picture.</p>
+          </header>
+
+          <div class="stack-grid">
+            <div class="stack-group reveal"><div class="stack-core">
+              <h3 class="stack-h">Languages</h3>
+              <ul class="stack-list"><li>TypeScript</li><li>JavaScript</li><li>Python</li><li>Kotlin</li><li>Go</li><li>SQL</li><li>Bash</li></ul>
+            </div></div>
+            <div class="stack-group reveal"><div class="stack-core">
+              <h3 class="stack-h">Frontend</h3>
+              <ul class="stack-list"><li>React</li><li>Next.js</li><li>Vite</li><li>Tailwind</li><li>Web Components</li></ul>
+            </div></div>
+            <div class="stack-group reveal"><div class="stack-core">
+              <h3 class="stack-h">Backend</h3>
+              <ul class="stack-list"><li>Node.js</li><li>FastAPI</li><li>Express</li><li>Socket.IO</li><li>REST</li><li>WebSockets</li></ul>
+            </div></div>
+            <div class="stack-group reveal"><div class="stack-core">
+              <h3 class="stack-h">Data</h3>
+              <ul class="stack-list"><li>PostgreSQL</li><li>MongoDB</li><li>Redis</li><li>SQLite</li><li>Vector DBs</li></ul>
+            </div></div>
+            <div class="stack-group reveal"><div class="stack-core">
+              <h3 class="stack-h">AI &amp; ML</h3>
+              <ul class="stack-list"><li>Claude</li><li>OpenAI</li><li>Local LLMs</li><li>RAG</li><li>Embeddings</li><li>PyTorch</li></ul>
+            </div></div>
+            <div class="stack-group reveal"><div class="stack-core">
+              <h3 class="stack-h">Infrastructure</h3>
+              <ul class="stack-list"><li>Docker</li><li>GitHub Actions</li><li>Nginx</li><li>Cloudflare</li><li>Render</li><li>Linux</li></ul>
+            </div></div>
+            <div class="stack-group reveal"><div class="stack-core">
+              <h3 class="stack-h">Security</h3>
+              <ul class="stack-list"><li>libsodium</li><li>OAuth 2.0</li><li>JWT</li><li>TLS</li><li>OWASP</li><li>Threat modelling</li></ul>
+            </div></div>
+            <div class="stack-group reveal"><div class="stack-core">
+              <h3 class="stack-h">Testing &amp; QA</h3>
+              <ul class="stack-list"><li>Playwright</li><li>Vitest</li><li>Jest</li><li>pytest</li><li>Load testing</li><li>Fuzzing</li></ul>
+            </div></div>
+          </div>
+
+          <div class="assure reveal">
+            <div class="assure-core">
+              <h3 class="assure-h">How we verify every build</h3>
+              <ul class="assure-list">
+                <li><span class="assure-k">Automated tests</span><span class="assure-v">Unit, integration, and end-to-end suites that run on every commit — not written once at the end.</span></li>
+                <li><span class="assure-k">Code review</span><span class="assure-v">Every change is reviewed before it merges. No direct pushes to production branches.</span></li>
+                <li><span class="assure-k">Threat modelling</span><span class="assure-v">We enumerate what an attacker would try, then test that it fails. Auth, input validation, rate limits, and signed payloads.</span></li>
+                <li><span class="assure-k">Load &amp; failure testing</span><span class="assure-v">We push it past expected traffic and cut dependencies on purpose to see how it degrades.</span></li>
+                <li><span class="assure-k">Observability</span><span class="assure-v">Structured logs, metrics, and alerts wired before launch — so a problem is visible before a customer reports it.</span></li>
+                <li><span class="assure-k">Reproducible builds</span><span class="assure-v">Pinned dependencies and containerised environments. It builds the same on your machine as ours.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ENGAGEMENTS / EX ===================== -->
+      <section class="section band-eng" id="engagements" data-section="engagements" aria-labelledby="eng-title">
+        <div class="wrap">
+          <header class="section-head reveal">
+            <p class="kicker"><span>06</span> / Engagements <i>— how we work together</i></p>
+            <h2 class="h2" id="eng-title">Four ways in.</h2>
           </header>
           <ul class="eng-list reveal">
-            <li class="eng-row"><span class="eng-num">EX.01</span><div class="eng-body"><h3>Advisory</h3><p>Architecture review, threat modelling, technical due diligence.</p></div><a class="eng-go" href="#is" aria-label="Advisory — start a build"><span aria-hidden="true">↗</span></a></li>
-            <li class="eng-row"><span class="eng-num">EX.02</span><div class="eng-body"><h3>Build</h3><p>Scoped delivery of a system, end to end.</p></div><a class="eng-go" href="#is" aria-label="Build — start a build"><span aria-hidden="true">↗</span></a></li>
-            <li class="eng-row"><span class="eng-num">EX.03</span><div class="eng-body"><h3>Automation</h3><p>Audit a manual process. Replace it. Hand back the keys.</p></div><a class="eng-go" href="#is" aria-label="Automation — start a build"><span aria-hidden="true">↗</span></a></li>
-            <li class="eng-row"><span class="eng-num">EX.04</span><div class="eng-body"><h3>Retainer</h3><p>Ongoing engineering capacity for teams without it.</p></div><a class="eng-go" href="#is" aria-label="Retainer — start a build"><span aria-hidden="true">↗</span></a></li>
+            <li class="eng-row"><span class="eng-num">EX.01</span><div class="eng-body"><h3>Advisory</h3><p>Architecture review, threat modelling, technical due diligence.</p></div><a class="eng-go" href="#contact" aria-label="Advisory — start a build"><span aria-hidden="true">↗</span></a></li>
+            <li class="eng-row"><span class="eng-num">EX.02</span><div class="eng-body"><h3>Build</h3><p>Scoped delivery of a system, end to end.</p></div><a class="eng-go" href="#contact" aria-label="Build — start a build"><span aria-hidden="true">↗</span></a></li>
+            <li class="eng-row"><span class="eng-num">EX.03</span><div class="eng-body"><h3>Automation</h3><p>Audit a manual process. Replace it. Hand back the keys.</p></div><a class="eng-go" href="#contact" aria-label="Automation — start a build"><span aria-hidden="true">↗</span></a></li>
+            <li class="eng-row"><span class="eng-num">EX.04</span><div class="eng-body"><h3>Retainer</h3><p>Ongoing engineering capacity for teams without it.</p></div><a class="eng-go" href="#contact" aria-label="Retainer — start a build"><span aria-hidden="true">↗</span></a></li>
           </ul>
         </div>
       </section>
 
       <!-- ===================== CONTACT / IS ===================== -->
-      <section class="section band-contact" id="is" data-section="is" aria-labelledby="is-title">
+      <section class="section band-contact" id="contact" data-section="contact" aria-labelledby="contact-title">
         <div class="wrap contact-grid">
           <div class="contact-side reveal">
-            <p class="kicker"><span>IS</span> / Contact <i>— start here</i></p>
-            <h2 class="h2" id="is-title">Start a build.</h2>
+            <p class="kicker"><span>07</span> / Contact <i>— start here</i></p>
+            <h2 class="h2" id="contact-title">Start a build.</h2>
             <p class="contact-lead">A system that needs building — or a manual process that shouldn't be manual? Answer three questions and we'll have the shape of it before we even talk.</p>
             <p class="contact-direct">Direct — <a href="mailto:Ae.th.ry.on.ex.is@proton.me">Ae.th.ry.on.ex.is@proton.me</a></p>
           </div>
 
-          <div class="bezel reveal">
+          <div class="bezel reveal" data-scroll-focus>
             <form class="quiz-card" id="scope-form" novalidate>
               <header class="quiz-header">
-                <p><span class="status-node" aria-hidden="true"></span> Scope diagnostic</p>
+                <p class="quiz-title"><span class="status-node" aria-hidden="true"></span> Scope diagnostic</p>
                 <p class="quiz-progress" id="quiz-progress" aria-live="polite">01 / 03</p>
               </header>
 
+              <!-- segmented progress rail -->
+              <div class="quiz-rail" aria-hidden="true">
+                <span class="quiz-rail-seg" data-step="0"></span>
+                <span class="quiz-rail-seg" data-step="1"></span>
+                <span class="quiz-rail-seg" data-step="2"></span>
+                <span class="quiz-rail-seg" data-step="3"></span>
+              </div>
+
               <fieldset class="quiz-panel" data-panel="domain">
-                <legend><span class="question-number">01</span><span class="quiz-question" tabindex="-1">What do you need built?</span></legend>
-                <div class="chip-group" role="group" aria-label="Select a build domain">
-                  <button class="choice-chip" type="button" data-key="domain" data-value="Automation" aria-pressed="false">Automation</button>
-                  <button class="choice-chip" type="button" data-key="domain" data-value="AI systems" aria-pressed="false">AI systems</button>
-                  <button class="choice-chip" type="button" data-key="domain" data-value="Security" aria-pressed="false">Security</button>
-                  <button class="choice-chip" type="button" data-key="domain" data-value="Infrastructure" aria-pressed="false">Infrastructure</button>
-                  <button class="choice-chip" type="button" data-key="domain" data-value="Web" aria-pressed="false">Web</button>
-                  <button class="choice-chip" type="button" data-key="domain" data-value="Marketing" aria-pressed="false">Marketing</button>
-                  <button class="choice-chip" type="button" data-key="domain" data-value="Promotion" aria-pressed="false">Promotion</button>
+                <legend>
+                  <span class="question-number">01</span>
+                  <span class="quiz-question" tabindex="-1">What do you need?</span>
+                </legend>
+                <p class="quiz-help">Select everything that applies — most projects span more than one.</p>
+
+                <div class="chip-group chip-group-multi" role="group" aria-label="Select the services you need">
+                  <button class="choice-chip" type="button" data-key="domain" data-value="AI systems" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">AI systems</span><span class="chip-desc">LLM tooling, RAG, agents</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Automation" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Automation</span><span class="chip-desc">Kill a manual process</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Cybersecurity" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Cybersecurity</span><span class="chip-desc">Architecture &amp; hardening</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Infrastructure" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Infrastructure</span><span class="chip-desc">Deploy, host, scale</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Web development" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Web development</span><span class="chip-desc">Interfaces &amp; services</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Android development" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Android development</span><span class="chip-desc">Native mobile apps</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Consultancy" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Consultancy</span><span class="chip-desc">Review &amp; due diligence</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Marketing &amp; promotion" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Marketing &amp; promotion</span><span class="chip-desc">Get the work seen</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Applicant screening" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Applicant screening</span><span class="chip-desc">Technical assessments</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="domain" data-value="Not sure yet" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Not sure yet</span><span class="chip-desc">Help me work it out</span></span>
+                  </button>
+                </div>
+
+                <div class="quiz-next-row">
+                  <p class="quiz-selected" id="domain-count" aria-live="polite">Nothing selected yet</p>
+                  <button class="btn btn-primary quiz-next" type="button" data-next="1" disabled><span>Continue</span><span class="btn-orb" aria-hidden="true">→</span></button>
                 </div>
               </fieldset>
 
               <fieldset class="quiz-panel" data-panel="stage" hidden>
-                <legend><span class="question-number">02</span><span class="quiz-question" tabindex="-1">What stage is it at?</span></legend>
-                <div class="chip-group" role="group" aria-label="Select the current stage">
-                  <button class="choice-chip" type="button" data-key="stage" data-value="Idea" aria-pressed="false">Idea</button>
-                  <button class="choice-chip" type="button" data-key="stage" data-value="Prototype" aria-pressed="false">Prototype</button>
-                  <button class="choice-chip" type="button" data-key="stage" data-value="In production" aria-pressed="false">In production</button>
-                  <button class="choice-chip" type="button" data-key="stage" data-value="Firefighting" aria-pressed="false">Firefighting</button>
+                <legend>
+                  <span class="question-number">02</span>
+                  <span class="quiz-question" tabindex="-1">Where is it right now?</span>
+                </legend>
+                <p class="quiz-help">This tells us what the first week looks like.</p>
+
+                <div class="chip-group chip-group-rich" role="group" aria-label="Select the current stage">
+                  <button class="choice-chip" type="button" data-key="stage" data-value="Idea" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Just an idea</span><span class="chip-desc">Nothing built yet</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="stage" data-value="Prototype" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Prototype</span><span class="chip-desc">Works, but not production</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="stage" data-value="In production" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">In production</span><span class="chip-desc">Live, needs work</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="stage" data-value="Firefighting" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Firefighting</span><span class="chip-desc">Something is broken</span></span>
+                  </button>
                 </div>
                 <button class="back-button" type="button" data-back="0">← Back</button>
               </fieldset>
 
-              <fieldset class="quiz-panel" data-panel="timeline" hidden>
-                <legend><span class="question-number">03</span><span class="quiz-question" tabindex="-1">Timeline?</span></legend>
-                <div class="chip-group" role="group" aria-label="Select a timeline">
-                  <button class="choice-chip" type="button" data-key="timeline" data-value="Now" aria-pressed="false">Now</button>
-                  <button class="choice-chip" type="button" data-key="timeline" data-value="This quarter" aria-pressed="false">This quarter</button>
-                  <button class="choice-chip" type="button" data-key="timeline" data-value="Just exploring" aria-pressed="false">Just exploring</button>
+              <fieldset class="quiz-panel" data-panel="brief" hidden>
+                <legend>
+                  <span class="question-number">03</span>
+                  <span class="quiz-question" tabindex="-1">What are you trying to do?</span>
+                </legend>
+                <p class="quiz-help">A few lines in your own words. What's the actual problem, and what would "done" look like?</p>
+
+                <div class="field field-lg">
+                  <label for="pitch">Your pitch <span>optional, but it gets you a better reply</span></label>
+                  <textarea id="pitch" name="pitch" rows="5" maxlength="1200" placeholder="e.g. We take orders on WhatsApp and copy them into a spreadsheet by hand. Around 80 a day, and we keep losing some. We want drivers to get assigned automatically and customers to see where their order is."></textarea>
+                  <p class="field-count" id="pitch-count" aria-hidden="true">0 / 1200</p>
                 </div>
-                <button class="back-button" type="button" data-back="1">← Back</button>
+
+                <div class="quiz-next-row">
+                  <button class="back-button" type="button" data-back="1">← Back</button>
+                  <button class="btn btn-primary quiz-next" type="button" data-next="3"><span>Continue</span><span class="btn-orb" aria-hidden="true">→</span></button>
+                </div>
+              </fieldset>
+
+              <fieldset class="quiz-panel" data-panel="timeline" hidden>
+                <legend>
+                  <span class="question-number">04</span>
+                  <span class="quiz-question" tabindex="-1">How soon do you need it?</span>
+                </legend>
+                <p class="quiz-help">Last one — then we'll show you the brief.</p>
+
+                <div class="chip-group chip-group-rich" role="group" aria-label="Select a timeline">
+                  <button class="choice-chip" type="button" data-key="timeline" data-value="Now" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Now</span><span class="chip-desc">Starting immediately</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="timeline" data-value="This quarter" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">This quarter</span><span class="chip-desc">Planned, not urgent</span></span>
+                  </button>
+                  <button class="choice-chip" type="button" data-key="timeline" data-value="Just exploring" aria-pressed="false">
+                    <span class="chip-mark" aria-hidden="true"></span>
+                    <span class="chip-text"><span class="chip-label">Just exploring</span><span class="chip-desc">Scoping the idea</span></span>
+                  </button>
+                </div>
+                <button class="back-button" type="button" data-back="2">← Back</button>
               </fieldset>
 
               <div class="quiz-panel reveal-panel" data-panel="reveal" hidden>
-                <p class="reveal-label" tabindex="-1">Brief assembled</p>
-                <pre class="scope-summary" id="scope-summary" tabindex="0">&gt; SCOPE
+                <p class="reveal-label" tabindex="-1"><span class="reveal-check" aria-hidden="true">✓</span> Your brief</p>
+
+                <!-- the payoff: a readable brief card, not a terminal dump -->
+                <div class="brief-card">
+                  <div class="brief-rows">
+                    <div class="brief-row"><span class="brief-k">Services</span><span class="brief-v" id="brief-domain">—</span></div>
+                    <div class="brief-row"><span class="brief-k">Stage</span><span class="brief-v" id="brief-stage">—</span></div>
+                    <div class="brief-row"><span class="brief-k">Timeline</span><span class="brief-v" id="brief-timeline">—</span></div>
+                  </div>
+                  <p class="brief-read" id="brief-read">—</p>
+                </div>
+                <pre class="scope-summary" id="scope-summary" hidden>&gt; SCOPE
   domain    : —
   stage     : —
   timeline  : —</pre>
+
                 <div class="field">
-                  <label for="contact-email">Your email</label>
-                  <input id="contact-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" required aria-describedby="email-error" aria-invalid="false">
+                  <label for="contact-email">Where do we reply?</label>
+                  <input id="contact-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" placeholder="you@company.com" required aria-describedby="email-error" aria-invalid="false">
                   <p class="field-error" id="email-error" role="status" hidden>Enter a valid email so we can reply.</p>
                 </div>
                 <div class="field">
-                  <label for="contact-note">Note <span>optional / 280 max</span></label>
-                  <textarea id="contact-note" name="note" rows="1" maxlength="280" placeholder="One line on the system — optional"></textarea>
+                  <label for="contact-note">Anything else? <span>optional</span></label>
+                  <textarea id="contact-note" name="note" rows="2" maxlength="280" placeholder="One line on the system — what's the actual problem?"></textarea>
+                  <p class="field-count" id="note-count" aria-hidden="true">0 / 280</p>
                 </div>
                 <div class="hp-field" aria-hidden="true">
                   <label for="contact-company">Company (leave blank)</label>
@@ -267,8 +683,9 @@
                 <div class="quiz-actions">
                   <button class="btn btn-primary transmit-button" type="submit" data-magnetic><span>Transmit</span><span class="btn-orb" aria-hidden="true">↘</span></button>
                   <button class="copy-button" id="copy-brief" type="button">Copy brief</button>
-                  <button class="back-button" type="button" data-back="2">← Back</button>
+                  <button class="back-button" type="button" data-back="3">← Back</button>
                 </div>
+                <p class="quiz-assurance">No sales call. No mailing list. A real reply from an engineer, usually within a day.</p>
                 <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
                 <p class="transmit-confirmation" id="transmit-confirmation" role="status" hidden>Brief sent — we'll reply from Ae.th.ry.on.ex.is@proton.me. No word in 2 days? Email us directly: <a href="mailto:Ae.th.ry.on.ex.is@proton.me">Ae.th.ry.on.ex.is@proton.me</a></p>
               </div>
@@ -278,7 +695,7 @@
       </section>
     </main>
 
-    <a class="nudge-cta" id="nudge-cta" href="#is" aria-label="Scope a build — jump to the contact form">
+    <a class="nudge-cta" id="nudge-cta" href="#contact" aria-label="Scope a build — jump to the contact form">
       <span class="nudge-dot" aria-hidden="true"></span>
       <span class="nudge-text">Scope a build</span>
       <span class="btn-orb" aria-hidden="true">↘</span>
@@ -289,30 +706,108 @@
         <button class="modal-close" id="modal-close" type="button" aria-label="Close">✕</button>
         <p class="modal-kicker"><span class="live-dot" aria-hidden="true"></span> Open for work</p>
         <h2 class="modal-title" id="modal-title">Have a system that needs building?</h2>
-        <p class="modal-body" id="modal-body">Tell us the shape of it in three taps — domain, stage, timeline. You'll get a plan, not a sales call.</p>
+        <p class="modal-body" id="modal-body">Tell us the shape of it — services, stage, and what you're trying to do. You'll get a plan, not a sales call.</p>
         <div class="modal-actions">
-          <a class="btn btn-primary" id="modal-cta" href="#is" data-magnetic><span>Scope a build</span><span class="btn-orb" aria-hidden="true">↘</span></a>
+          <a class="btn btn-primary" id="modal-cta" href="#contact" data-magnetic><span>Scope a build</span><span class="btn-orb" aria-hidden="true">↘</span></a>
           <a class="btn btn-ghost" href="mailto:Ae.th.ry.on.ex.is@proton.me"><span>Email us</span><span class="btn-orb ghost" aria-hidden="true">→</span></a>
         </div>
         <button class="modal-dismiss" id="modal-dismiss" type="button">Not now</button>
       </div>
     </div>
 
+    <!-- ============ FOOTER ============ -->
     <footer class="site-footer">
+      <div class="footer-glow" aria-hidden="true"></div>
       <div class="wrap footer-inner">
-        <div class="footer-top">
-          <div class="footer-brand">
-            <img class="footer-logo" src="assets/logo.png" alt="" width="60" height="60">
-            <p class="footer-word">AE·TH·RY·ON·EX·IS</p>
+
+        <div class="footer-cta">
+          <div class="footer-cta-core">
+            <div>
+              <p class="footer-cta-kicker"><span class="live-dot" aria-hidden="true"></span> Open for work</p>
+              <p class="footer-cta-line">Let's build the thing properly.</p>
+            </div>
+            <a class="btn btn-primary" href="#contact" data-magnetic><span>Start a build</span><span class="btn-orb" aria-hidden="true">↗</span></a>
           </div>
-          <p class="footer-expansion">aether · thought · rhythm · origin · execution · intelligence systems</p>
         </div>
-        <div class="footer-bottom">
-          <div class="footer-contact">
-            <a href="mailto:Ae.th.ry.on.ex.is@proton.me">Email</a>
-            <a href="https://instagram.com/ae.th.ry.on.ex.is" target="_blank" rel="noopener">Instagram</a>
+
+        <div class="footer-cols">
+          <div class="footer-col footer-col-brand">
+            <div class="footer-brand">
+              <img class="footer-logo" src="assets/logo.png" alt="" width="60" height="60">
+              <p class="footer-word">AE·TH·RY·ON·EX·IS</p>
+            </div>
+            <p class="footer-expansion">aether · thought · rhythm · origin · execution · intelligence systems</p>
+            <p class="footer-blurb">A deliberately small software engineering studio. We design, build, and ship production systems end to end — then hand them back documented and yours to run.</p>
           </div>
+
+          <nav class="footer-col" aria-label="Sections">
+            <p class="footer-head">Index</p>
+            <ul class="footer-links">
+              <li><a href="#home"><span class="fl-syl">AE</span> Studio</a></li>
+              <li><a href="#services"><span class="fl-syl">TH</span> Practice</a></li>
+              <li><a href="#process"><span class="fl-syl">RY</span> Method</a></li>
+              <li><a href="#work"><span class="fl-syl">ON</span> Work</a></li>
+              <li><a href="#work"><span class="fl-syl">EX</span> Engagements</a></li>
+              <li><a href="#contact"><span class="fl-syl">IS</span> Contact</a></li>
+            </ul>
+          </nav>
+
+          <div class="footer-col">
+            <p class="footer-head">Practice</p>
+            <ul class="footer-links footer-links-plain">
+              <li><a href="#services">Automation</a></li>
+              <li><a href="#services">AI systems</a></li>
+              <li><a href="#services">Security</a></li>
+              <li><a href="#services">Infrastructure</a></li>
+              <li><a href="#services">Web</a></li>
+              <li><a href="#services">Marketing &amp; promotion</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <p class="footer-head">Contact</p>
+            <ul class="footer-links footer-links-plain">
+              <li><a href="mailto:Ae.th.ry.on.ex.is@proton.me">Ae.th.ry.on.ex.is@proton.me</a></li>
+            </ul>
+
+            <p class="footer-head footer-head-sub">Follow</p>
+            <ul class="social-list">
+              <li>
+                <a class="social" href="https://instagram.com/ae.th.ry.on.ex.is" target="_blank" rel="noopener">
+                  <span class="social-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+                  </span>
+                  <span class="social-text"><span class="social-name">Instagram</span><span class="social-handle">@ae.th.ry.on.ex.is</span></span>
+                  <span class="social-go" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a class="social" href="https://github.com/Aethryonexis" target="_blank" rel="noopener">
+                  <span class="social-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19 3.4a4.9 4.9 0 0 0-.1-3.6s-1.1-.3-3.6 1.4a12.4 12.4 0 0 0-6.6 0C6.2-.5 5.1-.2 5.1-.2a4.9 4.9 0 0 0-.1 3.6 5.2 5.2 0 0 0-1.4 3.6c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.6V20" transform="translate(0 2)"/></svg>
+                  </span>
+                  <span class="social-text"><span class="social-name">GitHub</span><span class="social-handle">Aethryonexis</span></span>
+                  <span class="social-go" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a class="social" href="https://www.linkedin.com/company/aethryonexis" target="_blank" rel="noopener">
+                  <span class="social-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10.5V17"/><circle cx="7.5" cy="7.4" r="0.9" fill="currentColor" stroke="none"/><path d="M11.5 17v-3.6a2.4 2.4 0 0 1 4.8 0V17"/></svg>
+                  </span>
+                  <span class="social-text"><span class="social-name">LinkedIn</span><span class="social-handle">Aethryonexis</span></span>
+                  <span class="social-go" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            </ul>
+
+            <p class="footer-status"><span class="beacon-dot" aria-hidden="true"></span> Open for work — remote, worldwide</p>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
           <p class="footer-copy">© 2026 AETHRYONEXIS — deliberately small.</p>
+          <p class="footer-made">Built end to end, in house.</p>
         </div>
       </div>
     </footer>
