@@ -447,9 +447,11 @@ a { color: var(--gold); text-decoration: none; }
 .hero {
   position: relative;
   display: flex; flex-direction: column; justify-content: center;
-  min-height: min(880px, 100dvh);
+  /* auto rather than a viewport floor: with the name block reduced to a single line, a fixed
+     min-height stretched the hero and left a dead gap above Services. */
+  min-height: auto;
   padding-top: clamp(7.5rem, 12vw, 10.5rem);
-  padding-bottom: clamp(4rem, 8vw, 7rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
 }
 .hero-glow {
   position: absolute; z-index: -1; inset: auto 0 -10% 0; height: 60%;
@@ -524,7 +526,7 @@ a { color: var(--gold); text-decoration: none; }
 /* scroll hint */
 .scroll-hint {
   display: inline-flex; align-items: center; gap: 0.6rem;
-  margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+  margin: clamp(1.8rem, 3.5vw, 2.6rem) auto 0;
   font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--faint);
   transition: color 0.5s var(--ease);
 }
@@ -536,27 +538,10 @@ a { color: var(--gold); text-decoration: none; }
 /* ============================================================
    NAME DECODE
    ============================================================ */
-.name-decode { margin-top: clamp(3rem, 6vw, 4.5rem); padding-top: clamp(2rem, 4vw, 2.8rem); border-top: 1px solid var(--line); }
-.nd-head { margin: 0 0 1.4rem; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.name-decode { margin-top: clamp(2.4rem, 5vw, 3.6rem); padding-top: clamp(1.8rem, 3.5vw, 2.4rem); border-top: 1px solid var(--line); }
+.name-decode { text-align: center; }
+.nd-head { margin: 0; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
 .nd-head span { color: var(--gold); }
-.nd-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; grid-template-columns: 1fr; }
-.nd-item {
-  display: flex; align-items: baseline; gap: 0.7rem;
-  padding: 0.85rem 1.05rem;
-  border: 1px solid var(--line); border-radius: 16px;
-  background: var(--panel); box-shadow: var(--inset);
-  transition: border-color 0.55s var(--ease), transform 0.55s var(--ease), background 0.55s var(--ease);
-}
-.nd-item:hover { border-color: var(--gold-line); transform: translateY(-3px); background: rgba(255, 255, 255, 0.06); }
-.nd-syl { font-family: var(--display); font-weight: 900; font-size: 1rem; color: var(--gold); min-width: 2em; animation: ndpulse 6s var(--ease) infinite; }
-.nd-item:nth-child(2) .nd-syl { animation-delay: 0.5s; }
-.nd-item:nth-child(3) .nd-syl { animation-delay: 1s; }
-.nd-item:nth-child(4) .nd-syl { animation-delay: 1.5s; }
-.nd-item:nth-child(5) .nd-syl { animation-delay: 2s; }
-.nd-item:nth-child(6) .nd-syl { animation-delay: 2.5s; }
-@keyframes ndpulse { 0%, 78%, 100% { color: var(--gold); text-shadow: none; } 38% { color: var(--gold-hi); text-shadow: 0 0 14px rgba(228, 193, 92, 0.6); } }
-.nd-name { font-family: var(--display); font-weight: 600; font-size: 0.92rem; color: var(--platinum); }
-.nd-desc { flex: 1; min-width: 0; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.02em; color: var(--muted); }
 
 /* ============================================================
    PRACTICE — asymmetrical bento, double bezel
@@ -992,7 +977,6 @@ a { color: var(--gold); text-decoration: none; }
 @media (min-width: 560px) {
   .bento-practice { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bento-practice .feat { grid-column: 1 / -1; }
-  .nd-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -1012,7 +996,6 @@ a { color: var(--gold); text-decoration: none; }
 @media (min-width: 900px) {
   .hero-grid { grid-template-columns: minmax(0, 1.32fr) minmax(300px, 0.9fr); }
   .contact-grid { grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr); }
-  .nd-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .footer-cols { grid-template-columns: 1.6fr 1fr 1fr 1.2fr; }
 }
 
@@ -1306,26 +1289,71 @@ a { color: var(--gold); text-decoration: none; }
 /* ============================================================
    NAME DECODE — mapping arrows + nine-word philosophy
    ============================================================ */
-.nd-arrow { flex: 0 0 auto; color: var(--gold-lo); font-size: 0.8rem; line-height: 1; }
 
-.nd-philosophy {
-  display: grid; gap: 0.6rem;
-  margin: clamp(1.4rem, 3vw, 2rem) 0 0;
-  padding: clamp(1.1rem, 2.4vw, 1.5rem);
-  border: 1px solid var(--line); border-radius: 18px;
-  background: linear-gradient(120deg, rgba(228, 193, 92, 0.06), rgba(255, 255, 255, 0.02) 60%);
-  box-shadow: var(--inset);
+/* The nine words as a centred constellation. Each word is its own item with a gold separator
+   drawn as a pseudo-element, so a wrap can never leave a bullet dangling at a line end or
+   orphaned at the start of the next line. */
+.nd-words {
+  list-style: none;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 0.4rem clamp(0.8rem, 2.2vw, 1.5rem);
+  margin: clamp(1.4rem, 3vw, 2.2rem) auto 0;
+  padding: 0;
+  max-width: 62rem;
 }
-.nd-philosophy-label {
-  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.24em;
-  text-transform: uppercase; color: var(--gold);
-}
-.nd-philosophy-words {
+.nd-words li {
+  position: relative;
   font-family: var(--display); font-weight: 600;
-  font-size: clamp(0.92rem, 2.2vw, 1.15rem); letter-spacing: -0.015em;
-  line-height: 1.7; color: var(--platinum);
+  font-size: clamp(0.95rem, 2.1vw, 1.35rem);
+  letter-spacing: -0.02em; line-height: 1.3;
+  color: var(--platinum);
+  white-space: nowrap;
+  transition: color 0.45s var(--ease), text-shadow 0.45s var(--ease);
 }
-.nd-philosophy-words i { font-style: normal; margin: 0 0.15em; color: var(--gold-lo); }
+/* separator sits in the gap, and is suppressed on the last item of every line by :last-child
+   plus the flex gap itself — no trailing bullet, ever */
+.nd-words li + li::before {
+  content: "";
+  position: absolute; top: 50%; left: calc(clamp(0.8rem, 2.2vw, 1.5rem) / -2);
+  width: 4px; height: 4px; margin-top: -2px;
+  border-radius: 50%; background: var(--gold);
+  box-shadow: 0 0 8px rgba(228, 193, 92, 0.7);
+  opacity: 0.85;
+}
+.nd-words li:hover { color: var(--gold-hi); text-shadow: 0 0 18px rgba(228, 193, 92, 0.45); }
 
 /* hero syllables carry their meaning on hover */
 .wordmark .syl { cursor: help; }
+
+/* ============================================================
+   SCROLLBAR — transparent track, shiny gold thumb
+   Standards-based properties first (Firefox), then WebKit/Blink,
+   which supports the richer gradient treatment.
+   ============================================================ */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+
+/* WebKit / Blink */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  /* inset transparent border keeps the thumb visually slim while staying easy to grab */
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background-image: linear-gradient(180deg, var(--gold-hi), var(--gold) 45%, var(--gold-lo));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+::-webkit-scrollbar-thumb:hover {
+  border-width: 2px;
+  background-image: linear-gradient(180deg, #FFF7E0, var(--gold-hi) 45%, var(--gold));
+}
+::-webkit-scrollbar-thumb:active {
+  background-image: linear-gradient(180deg, var(--gold), var(--gold-lo));
+}
+
+/* scrollable panes inside the page (code blocks, the scope summary) keep the same language */
+.scope-summary::-webkit-scrollbar { height: 8px; }
