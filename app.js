@@ -1682,12 +1682,14 @@ const CONFIG = {
         const rect = card.getBoundingClientRect();
         const px = (event.clientX - rect.left) / rect.width - 0.5;
         const py = (event.clientY - rect.top) / rect.height - 0.5;
+        // Include the scale here: an inline transform overrides the .target:hover scale from
+        // CSS, so without it the card would snap back to 1x the moment the pointer moves.
         card.style.transform =
-          "perspective(900px) rotateX(" +
+          "perspective(900px) scale(1.015) rotateX(" +
           (-py * MAX_DEG).toFixed(2) +
           "deg) rotateY(" +
           (px * MAX_DEG).toFixed(2) +
-          "deg) translateY(-5px)";
+          "deg)";
       });
 
       card.addEventListener("pointerleave", function () {

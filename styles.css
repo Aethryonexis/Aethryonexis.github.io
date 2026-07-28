@@ -248,7 +248,9 @@ a { color: var(--gold); text-decoration: none; }
 .chrome {
   position: fixed; z-index: 60;
   top: clamp(14px, 2.2vw, 22px); left: 50%;
-  width: min(calc(100% - 24px), 1220px);
+  /* 90% of the viewport, leaving 5% clear on each side. The small-screen floor keeps the
+     controls from crowding on phones, where 5% gutters would be only ~16px. */
+  width: min(90%, calc(100% - 24px));
   transform: translateX(-50%);
   transition: transform 0.7s var(--ease);
 }
@@ -583,7 +585,7 @@ a { color: var(--gold); text-decoration: none; }
   transform: translateX(-120%);
   transition: transform 1.1s var(--ease);
 }
-.card:hover { transform: translateY(-5px); border-color: var(--gold-line); box-shadow: var(--lift-2); }
+.card:hover { border-color: var(--gold-line); box-shadow: var(--lift-2); }
 .card:hover .card-core::before { width: 74px; }
 .card:hover .card-core::after { transform: translateX(120%); }
 
@@ -1097,7 +1099,7 @@ a { color: var(--gold); text-decoration: none; }
   box-shadow: var(--lift-1);
   transition: transform 0.7s var(--ease), border-color 0.55s var(--ease), box-shadow 0.7s var(--ease);
 }
-.why-card:hover { transform: translateY(-4px); border-color: var(--gold-line); box-shadow: var(--lift-2); }
+.why-card:hover { border-color: var(--gold-line); box-shadow: var(--lift-2); }
 .why-core {
   position: relative; height: 100%;
   padding: clamp(1.4rem, 2.8vw, 1.9rem);
@@ -1151,7 +1153,7 @@ a { color: var(--gold); text-decoration: none; }
   background: var(--core-bg); box-shadow: var(--inset), var(--lift-1);
   transition: transform 0.7s var(--ease), border-color 0.55s var(--ease);
 }
-.phase:hover .phase-core { transform: translateY(-4px); border-color: var(--gold-line); }
+.phase:hover .phase-core { border-color: var(--gold-line); }
 .phase-top { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
 .phase-num {
   display: grid; place-items: center; flex: 0 0 auto;
@@ -1180,7 +1182,7 @@ a { color: var(--gold); text-decoration: none; }
   background: var(--core-bg); box-shadow: var(--inset);
   transition: border-color 0.55s var(--ease), transform 0.6s var(--ease);
 }
-.stack-group:hover .stack-core { border-color: var(--gold-line); transform: translateY(-3px); }
+.stack-group:hover .stack-core { border-color: var(--gold-line); }
 .stack-h { margin: 0 0 0.9rem; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
 .stack-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .stack-list li {
@@ -1384,3 +1386,52 @@ html {
 /* will-change only while an element is actually mid-transition; leaving it on permanently
    pins a compositor layer per element and costs memory on mobile for no benefit. */
 .card, .why-card, .hero-logo, .wordmark { will-change: auto; }
+
+/* ============================================================
+   HOVER TARGETING — gold corner brackets + lift
+   Four rounded corner brackets frame the element on hover, like a
+   viewfinder locking on. Drawn with two pseudo-elements: each renders a
+   full rounded border, then a mask keeps only the corner arcs. Animated
+   with transform/opacity only, so nothing repaints.
+   ============================================================ */
+.target { position: relative; transition: transform 0.45s var(--ease); }
+
+.target::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border: 2px solid var(--gold);
+  border-radius: calc(var(--r-shell) + 5px);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.35s var(--ease), transform 0.45s var(--ease);
+  /* keep only the four corner arcs: transparent band across the middle of each axis */
+  -webkit-mask:
+    linear-gradient(to right, #000 0 26%, transparent 26% 74%, #000 74% 100%),
+    linear-gradient(to bottom, #000 0 26%, transparent 26% 74%, #000 74% 100%);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to right, #000 0 26%, transparent 26% 74%, #000 74% 100%),
+    linear-gradient(to bottom, #000 0 26%, transparent 26% 74%, #000 74% 100%);
+  mask-composite: intersect;
+  box-shadow: 0 0 18px -4px rgba(228, 193, 92, 0.7);
+  z-index: 2;
+}
+
+.target:hover::before,
+.target:focus-within::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* the lift — subtle, so it reads as "selected" rather than as the layout jumping */
+.target:hover { transform: scale(1.015); z-index: 2; }
+
+@media (hover: none) {
+  .target:hover { transform: none; }
+  .target:hover::before { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .target:hover { transform: none; }
+}
